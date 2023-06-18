@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="www.thymeleaf.org">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employees List Page</title>
+
+</head>
+
+<body>
+
+<div class="container">
+    <div class="row col-md-10">
+        <h2>List of Employees</h2>
+    </div>
+    <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th>Employee ID</th>
+            <th>Email ID</th>
+            <th>Employment Type</th>
+            <th>Password</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each = "employee : ${employees}">
+            <td th:text = "${employee.empId}"></td>
+            <td th:text = "${employee.email}"></td>
+            <td th:text = "${employee.empType}"></td>
+            <td th:text = "${employee.password}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+</div>
+</body>
+</html>

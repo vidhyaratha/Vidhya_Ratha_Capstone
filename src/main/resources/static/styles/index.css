@@ -1,0 +1,56 @@
+body {
+    background-color: #f8f9fa;
+    font-family: Arial, sans-serif;
+  }
+
+  .navbar {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  a:hover{
+      color:rgb(192, 191, 190);
+  }
+
+  .navbar-brand {
+    color: #fff;
+  }
+  
+  .nav-link{
+      color: #fff;
+  }
+
+  .hero {
+    background-image: url('../images/landingimage1.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 500px;
+    padding-top : 200px;  
+  }
+
+  h1 {
+    color: #d47f0f;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h6 {
+    color: #0f0f0f;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+ 
+  .footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }
+
+
+  
+

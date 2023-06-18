@@ -1,0 +1,31 @@
+.gradient-custom {
+    background: #f6d365;
+    background: -webkit-linear-gradient(to right bottom, rgb(101, 123, 246), rgb(133, 253, 253));
+    background: linear-gradient(to right bottom, rgb(101, 123, 246),  rgb(133, 253, 253))
+    }
+ .offcanvas-backdrop.fade.show {
+        /* background-color: lightgray !important; */
+        opacity: 50%;
+      }
+tr{
+    border: 1px solid rgb(131, 128, 128);
+}
+table{
+    width:700px;
+    height:200px;
+}
+.card
+{
+    width:1190px;
+    margin-top : 100px;
+    margin-right :200px;
+    margin-bottom: 80px;
+    margin-left:100px ;
+}
+
+.footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+  }

@@ -1,0 +1,43 @@
+    .navbar {
+        background-color: #343a40;
+        color: #fff;
+      }
+    
+      a:hover{
+        color:rgb(192, 191, 190);
+      }
+    
+      .navbar-brand {
+        color: #fff;
+      }
+      
+      .nav-link{
+          color: #fff;
+      }
+
+      h3{
+       display: flex;
+       align-items: center;
+       justify-content: center;
+      }
+
+     div.form{
+       display: block;
+      }
+
+      form
+      {
+        display:inline-block;
+        margin-left:300px;
+        width:50%;
+        text-align:left;
+      }
+     
+
+      .footer {
+        background-color: #343a40;
+        color: #fff;
+        padding: 20px;
+        text-align: center;
+      }
+      

@@ -1,0 +1,52 @@
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
+    font-size: 1rem;
+    line-height: 2.15;
+    padding-left: .75em;
+    padding-right: .75em;
+    }
+.card-registration .select-arrow {
+    top: 13px;
+    }
+    
+.navbar {
+    background-color: #343a40;
+    color: #fff;
+  }
+
+  a:hover{
+    color:rgb(192, 191, 190);
+  }
+
+  .navbar-brand {
+    color: #fff;
+  }
+  
+  .nav-link{
+      color: #fff;
+  }
+
+  h3{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+   }
+
+  div.form{
+    display: block;
+   }
+
+   form
+   {
+     display:inline-block;
+     margin-left:300px;
+     width:50%;
+     text-align:left;
+   }
+
+   .footer {
+    background-color: #343a40;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    margin-top:65px;
+  }
