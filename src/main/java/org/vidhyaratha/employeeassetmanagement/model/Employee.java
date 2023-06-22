@@ -2,11 +2,15 @@ package org.vidhyaratha.employeeassetmanagement.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 @Table(name = "employee")
 @Entity
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Employee {
@@ -16,49 +20,20 @@ public class Employee {
 //    private int Id;
 
     @Id
-@Column(name = "emp_id")
+    @Column(name = "empId")
     private String empId;
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "password")
     private String password;
-@Column(name="emp_type")
+
+    @Column(name = "empType")
     private String empType;
 
 
-       public String getEmpId() {
-            return empId;
-        }
-
-        public void setEmpId(String empId) {
-            this.empId = empId;
-        }
-
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmpType() {
-        return empType;
-    }
-
-    public void setEmpType(String empType) {
-        this.empType = empType;
-    }
-}
+      }
 
 
 
