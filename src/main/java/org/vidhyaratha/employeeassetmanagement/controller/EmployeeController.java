@@ -6,18 +6,52 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
+import org.vidhyaratha.employeeassetmanagement.dto.EmployeeAssetsDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
+import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.EmployeeAssets;
+import org.vidhyaratha.employeeassetmanagement.service.AssetService;
+import org.vidhyaratha.employeeassetmanagement.service.EmployeeAssetsService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 @Controller
+@SessionAttributes({"employeeDTO", "employeeAssetsDTO"})
 public class EmployeeController
 {
+    //@Autowired
+    private final EmployeeService employeeService;
+
+    //@Autowired
+    private final AssetService assetService;
+
+    //@Autowired
+    private final EmployeeAssetsService employeeAssetsService;
+
     @Autowired
-    private EmployeeService employeeService;
+    public EmployeeController(EmployeeService employeeService, AssetService assetService, EmployeeAssetsService employeeAssetsService) {
+        this.employeeService = employeeService;
+        this.assetService = assetService;
+        this.employeeAssetsService = employeeAssetsService;
+    }
+
+    @ModelAttribute("employeeDTO")
+    public EmployeeDTO setUpEmployee() {
+        return new EmployeeDTO();
+    }
+
+
+    @ModelAttribute("employeeAssetsDTO")
+    public EmployeeAssetsDTO setUpEmployeeAssets()
+    {
+        return new EmployeeAssetsDTO();
+    }
+
 
 
     @GetMapping("/home")
@@ -49,17 +83,25 @@ public class EmployeeController
 
 
 
+    @GetMapping("/logout")
+    public String logout()
+    {
+        return "redirect:/signin?error";
+    }
+
 
 
     @PostMapping("/processSignin")
     public String signinEmployee(@Valid @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
-                                 BindingResult result,Model model)
+                                                                  BindingResult result,Model model)
     {
-        Employee existingEmployee = employeeService.findEmployeeByEmail(employeeDTO.getEmail());
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
 
         if(existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword()))
         {
-            return "success";
+
+            return "redirect:/getEmployeeAssets/"+ employeeDTO.getEmpId();
+            //return "success";
         }
         else
         {
@@ -97,17 +139,84 @@ public class EmployeeController
 
 
 
-    @GetMapping("/getEmployees")
-        public String getEmployees(Model model)
-        {
-            List<EmployeeDTO> employeesList = employeeService.getAllEmployees();
-            model.addAttribute("employees",employeesList);
-            return "employees";
+//    @GetMapping("/getEmployees")
+//        public String getEmployees(Model model)
+//        {
+//            List<EmployeeDTO> employeesList = employeeService.getAllEmployees();
+//            model.addAttribute("employees",employeesList);
+//            return "employees";
+//
+//        }
 
-        }
 
 
 
+
+
+    @GetMapping("/getEmployeeAssets/{employeeId}")
+    public String getEmployeeAssets(@PathVariable String employeeId, Model model)
+    {
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
+        model.addAttribute("employeeAssets",employeeAssets);
+        model.addAttribute("employee",existingEmployee);
+
+        return "userpage";
+    }
+
+
+
+
+
+    @GetMapping("/returnDevice")
+    public String showReturnDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    {
+        return "redirect:/"+ employeeDTO.getEmpId() +"/returnDevice";
+    }
+
+
+
+
+
+
+
+    @GetMapping("/{employeeId}/returnDevice")
+    public String returnDevice(@PathVariable String employeeId, Model model)
+    {
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
+
+        model.addAttribute("employeeAssets",employeeAssets);
+        model.addAttribute("employee",existingEmployee);
+        return "returndevice";
+    }
+
+
+
+
+
+    @PostMapping("/processReturnDevice")
+    public String processreturnDevice(@RequestParam("selectedAsset") Long selectedAssetId,
+                                      @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    {
+        assetService.updateAssetStatus(selectedAssetId, "unassigned");
+        //return "redirect:/deleteDevice/"+ assetId;
+        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+    }
+
+
+
+
+
+// To update the status of the asset
+    @DeleteMapping("/deleteDevice/{assetId}")
+    public String deleteDeviceById(@PathVariable("assetId") Long assetId,
+                                     @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    {
+        assetService.updateAssetStatus(assetId,"unassigned");
+        return "userpage";
+    }
 
 
 
@@ -143,6 +252,9 @@ public class EmployeeController
     }
 
    */
+
+
+
 
 
 

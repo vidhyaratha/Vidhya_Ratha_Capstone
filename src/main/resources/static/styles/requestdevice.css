@@ -7,13 +7,6 @@
         /* background-color: lightgray !important; */
         opacity: 50%;
       }
-tr{
-    border: 1px solid rgb(131, 128, 128);
-}
-table{
-    width:700px;
-    height:200px;
-}
 .card
 {
     width:1190px;

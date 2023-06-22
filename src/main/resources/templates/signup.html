@@ -70,18 +70,21 @@
 
         <div class="form">
 
-            <div th:if="${param.success}">
-                <div class="alert alert-info">
-                    You have successfully registered!
-                </div>
-            </div>
-            <div th:if="${param.error}">
-                <div class="alert alert-danger">
-                     Employee Already exists!
-                </div>
-            </div>
-
             <form id="signup-form"  th:action="@{/saveEmployee}" th:object="${employeeDTO}" method="post">
+               <div class="form-outline mb-4">
+                <div th:if="${param.success}">
+                    <div class="alert alert-info">
+                        You have successfully registered!
+                    </div>
+                </div>
+                <div th:if="${param.error}">
+                    <div class="alert alert-danger">
+                        Employee Already exists!
+                    </div>
+                </div>
+               </div>
+
+
                 <div class="form-outline mb-4">
                     <label class="form-label" ><b>Employee ID</b></label>
                     <input type="text" th:field="*{empId}" id="empid" class="form-control form-control-lg" required />
