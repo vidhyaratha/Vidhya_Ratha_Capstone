@@ -88,27 +88,27 @@
 <!--            <div class="card-body p-4">-->
 <!--                <h6><b>Edit Profile</b></h6>-->
 
-<!--                <form id="editprofile-form"  th:action="@{/saveEditEmployee}" th:object="${employeeMaster}" method="post">-->
+<!--                <form id="editprofile-form"  th:action="@{/processEditProfile}" th:object="${employeeMaster}" method="post">-->
 <!--                <hr class="mt-0 mb-4" />-->
 <!--                <div class="row pt-1">-->
 <!--                    <div class="col-6 mb-3">-->
 <!--                        <h6> Name</h6>-->
-<!--                        <input type="text" class="text-muted" id="ename" th:field="*{empName}"><span th:text="${employeeMaster.empName}" required></span></input>-->
+<!--                        <input type="text" class="text-muted" id="ename" th:field="*{empName}" th:text="${empName}"disabled />-->
 <!--                    </div>-->
 <!--                    <div class="col-6 mb-3">-->
 <!--                        <h6>Email</h6>-->
-<!--                        <input type="email" id="email"><span th:text="${email}" required></span></input>-->
+<!--                        <input type="email" id="email" th:field="*{email}" th:text="${email}" required></input>-->
 <!--                    </div>-->
 <!--                </div>-->
 
 <!--                <div class="row pt-2">-->
 <!--                    <div class="col-6 mb-3">-->
 <!--                        <h6> Contact Number </h6>-->
-<!--                        <input type="phone" id="phone"><span th:text="${phone}" required></span></input>-->
+<!--                        <input type="text" id="phone" th:field="*{phone}" th:text="${phone}" required></input>-->
 <!--                    </div>-->
 <!--                    <div class="col-6 mb-3">-->
 <!--                        <h6>Location</h6>-->
-<!--                        <input type="text" id="elocation"><span th:text="${location}" required></span></input>-->
+<!--                        <input type="text" id="elocation" th:field="*{location}" th:text="${location}" required/>-->
 <!--                    </div>-->
 <!--                </div>-->
 
@@ -116,7 +116,7 @@
 <!--                        <button type="submit" class="btn btn-primary btn-lg ms-2">-->
 <!--                            Submit-->
 <!--                        </button>-->
-
+<!--                    </div>-->
 
 
 <!--            </form>-->

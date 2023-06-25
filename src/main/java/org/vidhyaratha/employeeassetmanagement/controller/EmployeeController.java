@@ -27,7 +27,7 @@ import java.util.Set;
 
 
 @Controller
-@SessionAttributes("employeeDTO")
+@SessionAttributes({"employeeDTO","employeeMaster"})
 public class EmployeeController
 {
 
@@ -52,6 +52,12 @@ public class EmployeeController
     @ModelAttribute("employeeDTO")
     public EmployeeDTO setUpEmployee() {
         return new EmployeeDTO();
+    }
+
+
+    @ModelAttribute("employeeMaster")
+    public EmployeeMaster setUpMasterEmployee() {
+        return new EmployeeMaster();
     }
 
 
@@ -265,11 +271,10 @@ public class EmployeeController
                                        @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model)
     {
         Asset asset = assetService.assignAssetToAssignedStatus(selectedAssetType, "Unassigned");
-        if(asset == null)
+        if(asset.getAssetType()==null)
         {
             throw new RuntimeException("Please contact Admin");
-            //model.addAttribute("errorMessage","Please Contact admin");
-            //return "error";
+
         }
 
         employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId(), asset.getAssetName());
@@ -277,9 +282,10 @@ public class EmployeeController
     }
 
     @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException ex, Model model)
+    public String handleRuntimeException(RuntimeException ex,@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO ,Model model)
     {
         model.addAttribute("errorMessage", ex.getMessage());
+        model.addAttribute("employeeDTO0", employeeDTO);
         return "error";
     }
 
@@ -288,32 +294,33 @@ public class EmployeeController
 
 
 
-//
-//    @GetMapping("/editEmployeeInformation")
-//    public String showupdateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
-//    {
-//       return "redirect:/"+ employeeDTO.getEmpId()+ "/editEmployee";
-//    }
+
+    @GetMapping("/editEmployeeInformation")
+    public String showupdateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    {
+       return "redirect:/"+ employeeDTO.getEmpId()+ "/editEmployee";
+    }
 
 
 
-//    @GetMapping("/{employeeId}/editEmployee")
-//    public String updateEmployee(@PathVariable String employeeId, Model model)
-//    {
-//        EmployeeMaster employeeMaster = employeeMasterService.getEmployeeByEmpId(employeeId);
-//        model.addAttribute("employeeMaster",employeeMaster);
-//        return "editprofile";
-//    }
+    @GetMapping("/{employeeId}/editEmployee")
+    public String updateEmployee(@PathVariable String employeeId, Model model)
+    {
+        EmployeeMaster employeeMaster = employeeMasterService.getEmployeeByEmpId(employeeId);
+        model.addAttribute("employeeMaster",employeeMaster);
+        return "editprofile";
+    }
 
 
 
 
-//    @PostMapping("/processEditProfile")
-//    public void processEditProfile(@Valid @ModelAttribute("employee") EmployeeMasterDTO employeeMasterDTO)
-//    {
-//        //employeeMasterService.saveEmployeeMaster(employeeMasterDTO);
-//
-//    }
+    @PostMapping("/processEditProfile")
+    public String processEditProfile(@Valid @ModelAttribute("employeeMaster") EmployeeMaster employeeMaster)
+    {
+        employeeMasterService.saveEmployeeMaster(employeeMaster);
+        return "/getEmployeeAssets/"+ employeeMaster.getEmpId();
+
+    }
 
 
 

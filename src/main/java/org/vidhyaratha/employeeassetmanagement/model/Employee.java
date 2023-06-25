@@ -33,9 +33,6 @@ public class Employee {
     private String empType;
 
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "empId")
-    private Employee employee;
 
       }
 
