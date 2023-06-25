@@ -2,6 +2,7 @@ package org.vidhyaratha.employeeassetmanagement.controller;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,48 +10,50 @@ import org.springframework.web.bind.annotation.*;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.EmployeeAssetsDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
+import org.vidhyaratha.employeeassetmanagement.dto.EmployeeMasterDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.model.Employee;
 import org.vidhyaratha.employeeassetmanagement.model.EmployeeAssets;
+import org.vidhyaratha.employeeassetmanagement.model.EmployeeMaster;
+import org.vidhyaratha.employeeassetmanagement.repository.EmployeeAssetsRepository;
 import org.vidhyaratha.employeeassetmanagement.service.AssetService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeAssetsService;
+import org.vidhyaratha.employeeassetmanagement.service.EmployeeMasterService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 
 @Controller
 @SessionAttributes("employeeDTO")
 public class EmployeeController
 {
-    //@Autowired
+
     private final EmployeeService employeeService;
-
-    //@Autowired
     private final AssetService assetService;
-
-    //@Autowired
     private final EmployeeAssetsService employeeAssetsService;
+    private final EmployeeMasterService employeeMasterService;
 
     @Autowired
-    public EmployeeController(EmployeeService employeeService, AssetService assetService, EmployeeAssetsService employeeAssetsService) {
+    public EmployeeController(EmployeeService employeeService, AssetService assetService, EmployeeAssetsService employeeAssetsService, EmployeeMasterService employeeMasterService) {
         this.employeeService = employeeService;
         this.assetService = assetService;
         this.employeeAssetsService = employeeAssetsService;
+        this.employeeMasterService = employeeMasterService;
     }
+
+
+
+
+
 
     @ModelAttribute("employeeDTO")
     public EmployeeDTO setUpEmployee() {
         return new EmployeeDTO();
     }
 
-
-//    @ModelAttribute("employeeAssetsDTO")
-//    public EmployeeAssetsDTO setUpEmployeeAssets()
-//    {
-//        return new EmployeeAssetsDTO();
-//    }
 
 
 
@@ -101,7 +104,6 @@ public class EmployeeController
         {
 
             return "redirect:/getEmployeeAssets/"+ employeeDTO.getEmpId();
-            //return "success";
         }
         else
         {
@@ -117,19 +119,24 @@ public class EmployeeController
     public String saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,
                                BindingResult result,Model model)
     {
-        Employee existingEmployee = employeeService.findEmployeeByEmail(employeeDTO.getEmail());
+       // EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeDTO.getEmpId());
 
-        if ((existingEmployee != null && existingEmployee.getEmail() != null && !existingEmployee.getEmail().isEmpty())
-          ||(existingEmployee != null && existingEmployee.getEmpId() != null && !existingEmployee.getEmpId().isEmpty()))
-        {
-            result.rejectValue("email", "error.email", "Account already exists");
-        }
+       // if(masterEmployee != null && masterEmployee.getEmail() !=null && !masterEmployee.getEmail().isEmpty()) {
 
-        if (result.hasErrors()) {
-            model.addAttribute("employee", employeeDTO);
 
-            return "redirect:/signup?error";
-        }
+            Employee existingEmployee = employeeService.findEmployeeByEmail(employeeDTO.getEmail());
+
+            if ((existingEmployee != null && existingEmployee.getEmail() != null && !existingEmployee.getEmail().isEmpty())
+                    || (existingEmployee != null && existingEmployee.getEmpId() != null && !existingEmployee.getEmpId().isEmpty()))
+            {
+                result.rejectValue("email", "error.email", "Account already exists");
+            }
+
+                if (result.hasErrors()) {
+                    model.addAttribute("employee", employeeDTO);
+                    return "redirect:/signup?error";
+                }
+
 
         employeeService.saveEmployee(employeeDTO);
         return "redirect:/signup?success";
@@ -157,14 +164,24 @@ public class EmployeeController
     public String getEmployeeAssets(@PathVariable String employeeId, Model model)
     {
         Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+        EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
 
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
+        model.addAttribute("employeeMaster",masterEmployee);
 
         return "userpage";
     }
 
+
+
+
+    @GetMapping("/showDevice")
+    public String showAssignedDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    {
+        return "redirect:/getEmployeeAssets/"+ employeeDTO.getEmpId();
+    }
 
 
 
@@ -187,8 +204,12 @@ public class EmployeeController
         Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
 
+        EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
+
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
+        model.addAttribute("employeeMaster",masterEmployee);
+
         return "returnDevice";
     }
 
@@ -201,6 +222,9 @@ public class EmployeeController
                                       @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
     {
         assetService.updateAssetStatus(selectedAssetId,"Unassigned");
+
+        employeeAssetsService.deleteByAssetId(selectedAssetId);
+
         return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
     }
 
@@ -219,10 +243,16 @@ public class EmployeeController
     public String requestDevice(@PathVariable String employeeId, Model model)
     {
         Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
-        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
+       //List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
+        List<String> assetTypeList = assetService.getAllAssetTypes();
+        EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
 
-        model.addAttribute("employeeAssets",employeeAssets);
+
+        model.addAttribute("assetTypes",assetTypeList);
+        //model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
+        model.addAttribute("employeeMaster",masterEmployee);
+
         return "requestdevice";
     }
 
@@ -230,18 +260,60 @@ public class EmployeeController
 
 
 
-//    @PostMapping("/processRequestDevice")
-//    public String processRequestDevice(@RequestParam("selectedType") String selectedAssetType,
-//                                       @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
-//    {
-//       Asset asset = assetService.assignAssetToAssignedStatus(selectedAssetType, "Unassigned");
-//        employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId(), asset.getAssetName());
+    @PostMapping("/processRequestDevice")
+    public String processRequestDevice(@RequestParam("selectedType") String selectedAssetType,
+                                       @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model)
+    {
+        Asset asset = assetService.assignAssetToAssignedStatus(selectedAssetType, "Unassigned");
+        if(asset == null)
+        {
+            throw new RuntimeException("Please contact Admin");
+            //model.addAttribute("errorMessage","Please Contact admin");
+            //return "error";
+        }
+
+        employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId(), asset.getAssetName());
+        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public String handleRuntimeException(RuntimeException ex, Model model)
+    {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
+    }
+
+
+
+
+
+
 //
-//        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+//    @GetMapping("/editEmployeeInformation")
+//    public String showupdateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+//    {
+//       return "redirect:/"+ employeeDTO.getEmpId()+ "/editEmployee";
 //    }
 
 
 
+//    @GetMapping("/{employeeId}/editEmployee")
+//    public String updateEmployee(@PathVariable String employeeId, Model model)
+//    {
+//        EmployeeMaster employeeMaster = employeeMasterService.getEmployeeByEmpId(employeeId);
+//        model.addAttribute("employeeMaster",employeeMaster);
+//        return "editprofile";
+//    }
+
+
+
+
+//    @PostMapping("/processEditProfile")
+//    public void processEditProfile(@Valid @ModelAttribute("employee") EmployeeMasterDTO employeeMasterDTO)
+//    {
+//        //employeeMasterService.saveEmployeeMaster(employeeMasterDTO);
+//
+//    }
 
 
 

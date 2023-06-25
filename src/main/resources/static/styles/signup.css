@@ -1,9 +1,9 @@
-    .navbar {
+     .navbar {
         background-color: #343a40;
         color: #fff;
       }
-    
-      a:hover{
+
+      .nav-link:hover{
         color:rgb(192, 191, 190);
       }
     
@@ -40,4 +40,7 @@
         padding: 20px;
         text-align: center;
       }
-      
+
+
+
+

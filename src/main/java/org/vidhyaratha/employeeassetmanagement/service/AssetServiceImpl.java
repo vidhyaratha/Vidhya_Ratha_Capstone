@@ -9,6 +9,7 @@ import org.vidhyaratha.employeeassetmanagement.repository.EmployeeAssetsReposito
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class AssetServiceImpl implements AssetService{
@@ -16,12 +17,12 @@ public class AssetServiceImpl implements AssetService{
 
     private final AssetRepository assetRepository;
 
-    private final EmployeeAssetsRepository employeeAssetsRepository;
+    //private final EmployeeAssetsRepository employeeAssetsRepository;
 
     @Autowired
-    public AssetServiceImpl(AssetRepository assetRepository, EmployeeAssetsRepository employeeAssetsRepository) {
+    public AssetServiceImpl(AssetRepository assetRepository) {
         this.assetRepository = assetRepository;
-        this.employeeAssetsRepository = employeeAssetsRepository;
+        //this.employeeAssetsRepository = employeeAssetsRepository;
     }
 
     //    @Override
@@ -35,6 +36,7 @@ public class AssetServiceImpl implements AssetService{
     List<Asset> asset = assetRepository.findByAssetType(assetType);
     System.out.println("Asset List : "+asset);
     List<Asset> unassignedAssets = new ArrayList<>();
+        Asset newAsset = new Asset();
         for (Asset assetList : asset)
         {
             if(assetList.getStatus().equalsIgnoreCase(status))
@@ -42,15 +44,25 @@ public class AssetServiceImpl implements AssetService{
                 unassignedAssets.add(assetList);
             }
         }
-        Asset newAsset = unassignedAssets.get(0);
-        newAsset.setStatus("Assigned");
-        assetRepository.save(newAsset);
+        if(!unassignedAssets.isEmpty()) {
+             newAsset = unassignedAssets.get(0);
+            newAsset.setStatus("Assigned");
+            assetRepository.save(newAsset);
+        }
 
 
         return newAsset;
 
     }
 
+
+
+
+
+    @Override
+    public List<String> getAllAssetTypes() {
+      return assetRepository.findDistinctAssetTypes();
+    }
 
 
 

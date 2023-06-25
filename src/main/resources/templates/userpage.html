@@ -43,14 +43,20 @@
       <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasDarkNavbar"
         aria-labelledby="offcanvasDarkNavbarLabel">
         <div class="offcanvas-header">
-<!--          <img th:src="@{/images/icons8-user-48.png"} />-->
+          <img th:src="@{/images/iconuser.png}" alt="icon" style="width: 50px" />
           <!----- Inline Styling ---->
-          <h6 id="hiuser" style="color: rgb(84, 215, 255);">Test Employee name</h6>
+          <h6 id="hiuser" style="color: rgb(84, 215, 255); text-align:center">Hello,  <span th:text="${employeeMaster.empName}"></span></h6>
           <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
             aria-label="Close"></button>
         </div>
         <div class="offcanvas-body">
           <ul class="navbar-nav justify-content-start flex-grow-1 pe-3" >
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/editEmployeeInformation}">Edit Profile</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/showDevice}">Show Assigned devices</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" th:href="@{/requestDevice}">Request for new device</a>
             </li>
@@ -71,12 +77,14 @@
       <div class="col-md-3 gradient-custom text-center text-white" style="
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;">
-        <img th:src="@{/images/useravatar3.png}" alt="Avatar" class="img-fluid my-5" style="width: 80px" />
-        <h5 id="name">Employee Name : TestName</h5>
-        <p id="empid">Employee ID : <span th:text="${employee.empId}"></span></p>
-        <p id="desig">Designation : Test</p>
-        <p id="location">Location : Test</p>
-        <img th:src="@{/images/icons8-edit-32.png}" height="20px" />
+        <span th:if="${employeeMaster.gender == 'Female'}"><img th:src="@{/images/femaleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
+        <span th:if="${employeeMaster.gender == 'Male'}"><img th:src="@{/images/maleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
+        <h5 id="name"><span th:text="${employeeMaster.empName}"></span></h5>
+        <hr/>
+        <h6 id="empid"><span th:text="${employeeMaster.empId}"></span></h6>
+        <h6 id="desig"><span th:text="${employeeMaster.designation}"></span></h6>
+        <h6 id="location"><span th:text="${employeeMaster.location}"></span></h6>
+<!--        <img th:src="@{/images/icons8-edit-32.png}" height="20px" />-->
       </div>
       <div class="col-md-8">
         <div class="card-body p-4">
@@ -92,12 +100,20 @@
               <p class="text-muted" id="email"><span th:text="${employee.email}"></span></p>
             </div>
           </div>
+
+          <div class="col-md-6 col-md-offset-3">
+            <div th:if="${param.error}">
+              <div class="alert alert-danger">Please contact Admin at admin@internal.com</div>
+            </div>
+          </div>
+
+
           <h6><b>Assigned Assets</b></h6>
           <hr class="mt-0 mb-4" />
           <div class="row pt-1">
-            <div class="col-6 mb-3">
-              <!--------- Web Table to display Employee Information --------->
-              <table id="tableid">
+            <div class="col-10 mb-3">
+              <!--------- Web Table to display Employee Asset Information --------->
+              <table id="tableid" class="table table-hover">
                 <tr>
                   <th>Asset ID</th>
                   <th>Asset Name</th>
