@@ -48,7 +48,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{index.html}">
+                    <a class="nav-link" th:href="@{/faq}">
                         <h5>FAQ</h5>
                     </a>
                 </li>
@@ -114,7 +114,7 @@
 
                 <div class="form-outline mb-4">
                     <label class="form-label"><b>Password</b></label>
-                    <input type="password" th:field="*{password}" id="pwd" class="form-control form-control-lg" />
+                    <input type="password" th:field="*{password}" id="pwd" class="form-control form-control-lg" required/>
                     <p th:errors="*{password}"  class="text-danger" th:if="${#fields.hasErrors('password')}" ></p>
                 </div>
 

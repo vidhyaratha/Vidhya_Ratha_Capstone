@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
 
 @Table(name = "employeeassets")
 @Entity
@@ -15,8 +13,7 @@ import java.util.Date;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class EmployeeAssets
-{
+public class EmployeeAssets {
     @Id
     @Column(name = "Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,15 +26,15 @@ public class EmployeeAssets
     private String approvedAdminName;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="empId" , referencedColumnName="empId")
+    @JoinColumn(name = "empId", referencedColumnName = "empId")
     private Employee employee;
 
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumns({
-            @JoinColumn(name="assetId", referencedColumnName="assetId"),
-            @JoinColumn(name="assetName", referencedColumnName="assetName"),
-            @JoinColumn(name="assetType", referencedColumnName="assetType")
+            @JoinColumn(name = "assetId", referencedColumnName = "assetId"),
+            @JoinColumn(name = "assetName", referencedColumnName = "assetName"),
+            @JoinColumn(name = "assetType", referencedColumnName = "assetType")
     })
     private Asset asset;
 

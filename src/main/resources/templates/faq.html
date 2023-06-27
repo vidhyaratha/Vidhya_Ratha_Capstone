@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <title>FAQ Page</title>
+    <!--- Web Fonts --->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
+    <!--- External Styling -->
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/index.css}">
+    <!-- External Script File -->
+    <!--  <script src="../js/homepage.js" defer></script>-->
+    <script th:src="@{/js/faqs.js}" defer></script>
+    <!-- Internal Styling with different CSS Selectors-->
+    <style>
+    body {
+      font-family: "Roboto";
+    }
+    footer p{
+      font-size: 13px;
+    }
+    #sbutton{
+      margin-left:540px;
+      margin-top:45px;
+    }
+    .flex-container  button{
+      background-color: rgb(65, 64, 63);
+      color: white;
+    }
+    .flex-container{
+      display: flex;
+      column-gap: 20px;
+      align-items: flex-start;
+    }
+  </style>
+</head>
+
+
+<body>
+<nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <img class="navbar-brand" th:src="@{/images/logo10.jpg}" alt="logo" height="40px">
+        <h5>2D Software Solutions Inc.</h5>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/home}">
+                        <h5>Home</h5>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">
+                        <h5>Contact Us</h5>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="hero">
+    <div id="faq-container"></div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h3>About Us</h3>
+                <p>At 2D Software Solutions Inc., we are committed to delivering excellence in every project we undertake. Our
+                    team combines technical expertise, industry knowledge, and a passion for innovation to deliver solutions
+                    that transform businesses and drive tangible results.</p>
+            </div>
+            <div class="col-md-6">
+                <h3>Contact Us</h3>
+                <p>99 Old Grissom Rd, San Antonio, Texas, USA<br>
+                    Email: enquiries@twod.com<br>
+                    Phone: +1 210 777 8888</p>
+            </div>
+        </div>
+    </div>
+    <div class="bottom-footer" id="footerid">
+        <p>&copy; 2023 2D Software Solutions Inc. All rights reserved.</p>
+    </div>
+</footer>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

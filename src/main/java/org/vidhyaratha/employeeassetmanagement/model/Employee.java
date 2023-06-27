@@ -15,15 +15,13 @@ import lombok.Setter;
 @AllArgsConstructor
 public class Employee {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int Id;
 
     @Id
-    @Column(name = "empId")
+    @Column(name = "empId", unique = true)
     private String empId;
 
-    @Column(name = "email")
+
+    @Column(name = "email", unique = true)
     private String email;
 
     @Column(name = "password")
@@ -33,8 +31,7 @@ public class Employee {
     private String empType;
 
 
-
-      }
+}
 
 
 

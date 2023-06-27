@@ -6,16 +6,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-
-@Table(name="assets")
+@Table(name = "assets")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Asset
-{
+public class Asset {
 
     @Id
     @Column(name = "Id")

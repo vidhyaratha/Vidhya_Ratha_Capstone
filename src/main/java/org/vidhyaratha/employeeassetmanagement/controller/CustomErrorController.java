@@ -9,13 +9,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CustomErrorController implements ErrorController {
 
     @RequestMapping
-    public String handleError()
-    {
+    public String handleError() {
         return "error";
     }
 
-    public String getErrorPath()
-    {
+    public String getErrorPath() {
         return "/error";
     }
 }

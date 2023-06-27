@@ -1,7 +1,6 @@
 package org.vidhyaratha.employeeassetmanagement.dto;
 
-public class AssetDTO
-{
+public class AssetDTO {
     private Long id;
     private String assetId;
     private String assetType;

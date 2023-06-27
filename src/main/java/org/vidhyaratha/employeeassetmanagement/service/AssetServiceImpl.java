@@ -1,51 +1,40 @@
 package org.vidhyaratha.employeeassetmanagement.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.repository.AssetRepository;
-import org.vidhyaratha.employeeassetmanagement.repository.EmployeeAssetsRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+
 
 @Service
-public class AssetServiceImpl implements AssetService{
+public class AssetServiceImpl implements AssetService {
 
 
     private final AssetRepository assetRepository;
 
-    //private final EmployeeAssetsRepository employeeAssetsRepository;
 
     @Autowired
     public AssetServiceImpl(AssetRepository assetRepository) {
         this.assetRepository = assetRepository;
-        //this.employeeAssetsRepository = employeeAssetsRepository;
     }
-
-    //    @Override
-//    public Asset findAssetByAssetId(String assetId) {
-//        return assetRepository.findAssetByAssetId(assetId);
-//    }
 
 
     @Override
     public Asset assignAssetToAssignedStatus(String assetType, String status) {
-    List<Asset> asset = assetRepository.findByAssetType(assetType);
-    System.out.println("Asset List : "+asset);
-    List<Asset> unassignedAssets = new ArrayList<>();
+        List<Asset> asset = assetRepository.findByAssetType(assetType);
+        System.out.println("Asset List : " + asset);
+        List<Asset> unassignedAssets = new ArrayList<>();
         Asset newAsset = new Asset();
-        for (Asset assetList : asset)
-        {
-            if(assetList.getStatus().equalsIgnoreCase(status))
-            {
+        for (Asset assetList : asset) {
+            if (assetList.getStatus().equalsIgnoreCase(status)) {
                 unassignedAssets.add(assetList);
             }
         }
-        if(!unassignedAssets.isEmpty()) {
-             newAsset = unassignedAssets.get(0);
+        if (!unassignedAssets.isEmpty()) {
+            newAsset = unassignedAssets.get(0);
             newAsset.setStatus("Assigned");
             assetRepository.save(newAsset);
         }
@@ -56,23 +45,15 @@ public class AssetServiceImpl implements AssetService{
     }
 
 
-
-
-
     @Override
     public List<String> getAllAssetTypes() {
-      return assetRepository.findDistinctAssetTypes();
+        return assetRepository.findDistinctAssetTypes();
     }
-
-
-
-
 
 
     @Override
     public void updateAssetStatus(String assetId, String status) {
         Asset asset = assetRepository.findByAssetId(assetId);
-        //employeeAssetsRepository.deleteByAssetId(assetId);
         asset.setStatus(status);
         assetRepository.save(asset);
 

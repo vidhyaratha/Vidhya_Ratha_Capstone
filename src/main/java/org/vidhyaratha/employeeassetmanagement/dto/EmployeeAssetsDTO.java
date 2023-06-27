@@ -1,21 +1,14 @@
 package org.vidhyaratha.employeeassetmanagement.dto;
 
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.validation.constraints.NotEmpty;
+
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.model.Employee;
 
-import java.util.Date;
 
-public class EmployeeAssetsDTO
-{
+public class EmployeeAssetsDTO {
     private Long id;
     private String assetAssignedDate;
     private String approvedAdminName;
-    //private String empId;
-   // private String assetId;
     private Employee employee;
     private Asset asset;
 

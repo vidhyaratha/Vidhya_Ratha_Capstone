@@ -9,14 +9,14 @@ import org.vidhyaratha.employeeassetmanagement.repository.EmployeeMasterReposito
 import org.vidhyaratha.employeeassetmanagement.repository.EmployeeRepository;
 
 @Service
-public class EmployeeMasterServiceImpl implements EmployeeMasterService{
+public class EmployeeMasterServiceImpl implements EmployeeMasterService {
 
 
     private final EmployeeRepository employeeRepository;
     private final EmployeeMasterRepository employeeMasterRepository;
 
     @Autowired
-    public EmployeeMasterServiceImpl(EmployeeMasterRepository employeeMasterRepository,EmployeeRepository employeeRepository) {
+    public EmployeeMasterServiceImpl(EmployeeMasterRepository employeeMasterRepository, EmployeeRepository employeeRepository) {
         this.employeeMasterRepository = employeeMasterRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -33,26 +33,14 @@ public class EmployeeMasterServiceImpl implements EmployeeMasterService{
 
         EmployeeMaster empMaster = new EmployeeMaster();
 
-       EmployeeMaster employeeMasterExisting =  employeeMasterRepository.findEmployeeByempId(empMaster.getEmpId());
-       Employee existingEmployee =  employeeRepository.findEmployeeByEmpId(empMaster.getEmpId());
-       existingEmployee.setEmail(employeeMaster.getEmail());
+        Employee existingEmployee = employeeRepository.findEmployeeByEmpId(empMaster.getEmpId());
+        existingEmployee.setEmail(employeeMaster.getEmail());
 
-       employeeMasterExisting.setEmail(employeeMaster.getEmail());
-       employeeMasterExisting.setPhone(employeeMaster.getPhone());
-       employeeMasterExisting.setLocation(employeeMaster.getLocation());
-//       employeeMaster.setEmail(employeeMasterExisting.getEmail());
-//       employeeMaster.setPhone(employeeMasterExisting.getPhone());
-//       employeeMaster.setLocation(employeeMasterExisting.getLocation());
-
-
-//        employeeMaster.setEmpId(employeeMasterExisting.getEmpId());
-//        employeeMaster.setEmpName(employeeMasterExisting.getEmpName());
-//        employeeMaster.setDepartment(employeeMasterExisting.getDepartment());
-//        employeeMaster.setDesignation(employeeMasterExisting.getDesignation());
-//        employeeMaster.setGender(employeeMasterExisting.getGender());
-//        employeeMaster.setStartDate(employeeMasterExisting.getStartDate());
-//        employeeMaster.setSupervisor(employeeMasterExisting.getSupervisor());
-
+        EmployeeMaster employeeMasterExisting = employeeMasterRepository.findEmployeeByempId(empMaster.getEmpId());
+        employeeMasterExisting.setEmail(employeeMaster.getEmail());
+        employeeMasterExisting.setPhone(employeeMaster.getPhone());
+        employeeMasterExisting.setLocation(employeeMaster.getLocation());
+//
         employeeMasterRepository.save(employeeMaster);
     }
 }

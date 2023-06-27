@@ -3,15 +3,9 @@ package org.vidhyaratha.employeeassetmanagement.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-public class EmployeeDTO
-{
 
-//    private int Id;
+public class EmployeeDTO {
 
     @NotEmpty
     private String empId;
