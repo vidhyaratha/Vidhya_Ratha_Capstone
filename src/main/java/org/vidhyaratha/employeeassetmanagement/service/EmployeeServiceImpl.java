@@ -16,11 +16,21 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
 
+//    private BCryptPasswordEncoder encoder;
+//
+//    private RoleService roleService;
+
+//    @Autowired
+//    public EmployeeServiceImpl(EmployeeRepository employeeRepository, BCryptPasswordEncoder encoder, RoleService roleService) {
+//        this.employeeRepository = employeeRepository;
+//        this.encoder = encoder;
+//        this.roleService = roleService;
+//    }
+
     @Autowired
     public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
     }
-
 
     @Override
     public Employee findEmployeeByEmail(String email) {

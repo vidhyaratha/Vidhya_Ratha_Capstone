@@ -18,7 +18,7 @@
         <tr>
             <th>Employee ID</th>
             <th>Email ID</th>
-            <th>Employment Type</th>
+            <th>Full Name</th>
             <th>Password</th>
         </tr>
         </thead>
@@ -26,7 +26,7 @@
         <tr th:each = "employee : ${employees}">
             <td th:text = "${employee.empId}"></td>
             <td th:text = "${employee.email}"></td>
-            <td th:text = "${employee.empType}"></td>
+            <td th:text = "${employee.empName}"></td>
             <td th:text = "${employee.password}"></td>
         </tr>
         </tbody>

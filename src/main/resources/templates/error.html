@@ -85,8 +85,8 @@
 <!--            <h6 id="desig"><span th:text="${employeeMaster.designation}"></span></h6>-->
 <!--            <h6 id="location"><span th:text="${employeeMaster.location}"></span></h6>-->
 <!--        </div>-->
-        <div class="col-md-8">
-            <div class="card-body p-8">
+        <div class="col-md-12">
+            <div class="card-body p-12">
 <!--                <h6><b>Employee Information</b></h6>-->
 <!--                <hr class="mt-0 mb-4" />-->
                 <div class="row pt-1">
@@ -103,7 +103,10 @@
                     <p th:text="${error}"></p>
                     <p th:text="${status}"></p>
                 </div>
-
+<!--                <div class="row pt-1">-->
+<!--                    <h3 class="alert alert-danger">You have already been assigned the maximum number of Devices. Please contact IT Admin at admin@internal.com</h3>-->
+<!--                <p th:text="${exception.message}"></p>-->
+<!--                </div>-->
 
 
 
@@ -112,6 +115,7 @@
         </div>
     </div>
 </div>
+
 
 <footer class="footer">
     <div class="bottom-footer">

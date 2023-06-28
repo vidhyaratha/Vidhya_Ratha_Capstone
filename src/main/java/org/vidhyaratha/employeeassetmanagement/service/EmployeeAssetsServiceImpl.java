@@ -40,6 +40,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
         List<EmployeeAssets> employeeAssets = employeeAssetsRepository.findByEmployee(employee);
         List<AssetDTO> assetDTOList = new ArrayList<>();
 
+
         for (EmployeeAssets employeeAsset : employeeAssets) {
             Asset asset = employeeAsset.getAsset();
             AssetDTO assetDTO = new AssetDTO();
@@ -58,18 +59,28 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
 
     @Override
-    public void assignAsset(String empId, String assetId, String assetName) {
-        if (assetId != null) {
+    public void assignAsset(String empId, String assetId) {
+        Employee employee = employeeRepository.findEmployeeByEmpId(empId);
+        Asset asset = assetRepository.findByAssetId(assetId);
+
+        List<EmployeeAssets> employeeAssetsList = employeeAssetsRepository.findByEmployee(employee);
+
+        if(employeeAssetsList.size()<5 && assetId != null)
+        {
             EmployeeAssets employeeAssets = new EmployeeAssets();
             employeeAssets.setAssetAssignedDate(LocalDate.now().toString());
             employeeAssets.setApprovedAdminName("Smith_ADMIN");
-            Employee employee = employeeRepository.findEmployeeByEmpId(empId);
-            Asset asset = assetRepository.findByAssetId(assetId);
 
             employeeAssets.setEmployee(employee);
             employeeAssets.setAsset(asset);
 
             employeeAssetsRepository.save(employeeAssets);
+        }
+        else
+        {
+            asset.setStatus("Unassigned");
+            assetRepository.save(asset);
+            //throw new ReachedMaxDeviceException("Reached Maximum Assigned Devices");
         }
 
     }

@@ -97,7 +97,7 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
 
         }
 
-        employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId(), asset.getAssetName());
+        employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId());
         return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
     }
 

@@ -109,10 +109,14 @@
 
                 <div class="form-outline mb-4">
                     <label class="form-label" ><b>Gender</b></label>
-                    <input type="radio" value="male" name="gender"  th:checked="${employeeDTO.gender == 'male'}" required />
+                     <div class = "">
+                     <input type="radio" value="male" name="gender"  th:checked="${employeeDTO.gender == 'male'}" required />
                     <label>Male</label>
+                     </div>
+                    <div class = "">
                     <input type="radio" value="female" name="gender"  th:checked="${employeeDTO.gender == 'female'}" required/>
                     <label>Female</label>
+                    </div>
                     <p th:errors="*{gender}"  class="text-danger" th:if="${#fields.hasErrors('gender')}" ></p>
                 </div>
 
