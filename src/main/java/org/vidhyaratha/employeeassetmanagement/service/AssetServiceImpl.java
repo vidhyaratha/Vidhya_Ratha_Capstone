@@ -25,7 +25,6 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public Asset assignAssetToAssignedStatus(String assetType, String status) {
         List<Asset> asset = assetRepository.findByAssetType(assetType);
-        System.out.println("Asset List : " + asset);
         List<Asset> unassignedAssets = new ArrayList<>();
         Asset newAsset = new Asset();
         for (Asset assetList : asset) {

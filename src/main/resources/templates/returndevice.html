@@ -45,7 +45,7 @@
             <div class="offcanvas-header">
                 <img th:src="@{/images/iconuser.png}" alt="icon" style="width: 50px"/>
                 <!----- Inline Styling ---->
-                <h6 id="hiuser" style="color: rgb(84, 215, 255);">Hello,  <span th:text="${employeeMaster.empName}"></span></h6>
+                <h6 id="hiuser" style="color: rgb(84, 215, 255);">Hello,  <span th:text="${employee.empName}"></span></h6>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
                         aria-label="Close"></button>
             </div>
@@ -78,13 +78,13 @@
             border-top-left-radius: 0.5rem;
             border-bottom-left-radius: 0.5rem;">
 <!--            <img th:src="@{/images/useravatar3.png}" alt="Avatar" class="img-fluid my-5" style="width: 80px" />-->
-            <span th:if="${employeeMaster.gender == 'Female'}"><img th:src="@{/images/femaleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
-            <span th:if="${employeeMaster.gender == 'Male'}"><img th:src="@{/images/maleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
-            <h5 id="name"><span th:text="${employeeMaster.empName}"></span></h5>
+            <span th:if="${employee.gender == 'female'}"><img th:src="@{/images/femaleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
+            <span th:if="${employee.gender == 'male'}"><img th:src="@{/images/maleavatar.png}" alt="Avatar" class="img-fluid my-5" style="width: 150px; height:150px" /></span>
+            <h5 id="name"><span th:text="${employee.empName}"></span></h5>
             <hr />
-            <h6 id="empid"><span th:text="${employeeMaster.empId}"></span></h6>
-            <h6 id="desig"><span th:text="${employeeMaster.designation}"></span></h6>
-            <h6 id="location"><span th:text="${employeeMaster.location}"></span></h6>
+            <h6 id="empid"><span th:text="${employee.empId}"></span></h6>
+<!--            <h6 id="desig"><span th:text="${employee.designation}"></span></h6>-->
+            <h6 id="location"><span th:text="${employee.location}"></span></h6>
 <!--            <img th:src="@{/images/icons8-edit-32.png}" height="20px" />-->
         </div>
         <div class="col-md-8">
@@ -94,11 +94,11 @@
                 <div class="row pt-1">
                     <div class="col-6 mb-3">
                         <h6> Employee ID</h6>
-                        <p class="text-muted" id="eid"><span th:text="${employeeMaster.empId}"></span></p>
+                        <p class="text-muted" id="eid"><span th:text="${employee.empId}"></span></p>
                     </div>
                     <div class="col-6 mb-3">
                         <h6>Email</h6>
-                        <p class="text-muted" id="email"><span th:text="${employeeMaster.email}"></span></p>
+                        <p class="text-muted" id="email"><span th:text="${employee.email}"></span></p>
                     </div>
                 </div>
                 <h6><b>Return an existing Device</b></h6>

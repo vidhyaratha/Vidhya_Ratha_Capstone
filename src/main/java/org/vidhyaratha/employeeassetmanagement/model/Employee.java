@@ -27,8 +27,15 @@ public class Employee {
     @Column(name = "password")
     private String password;
 
-    @Column(name = "empType")
-    private String empType;
+    @Column(name = "empName")
+    private String empName;
+
+    @Column(name = "gender")
+    private String gender;
+
+    @Column(name = "location")
+    private String location;
+
 
 
 }

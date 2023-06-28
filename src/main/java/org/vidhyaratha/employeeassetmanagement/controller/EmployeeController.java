@@ -62,27 +62,23 @@ public class EmployeeController {
                                  BindingResult result, Model model) {
         Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
 
-        if (existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword()))
-        {
+        if (existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword())) {
             return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
-        }
-        else
-        {
+        } else {
             return "redirect:/signin?error";
         }
     }
 
 
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,
+    public String saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,@RequestParam("gender") String gender,
                                BindingResult result, Model model) {
 
         Employee existingEmployeeI = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
         Employee existingEmployeeE = employeeService.findEmployeeByEmail(employeeDTO.getEmail());
 
         if ((existingEmployeeI != null) || (existingEmployeeE != null)) {
-            if (existingEmployeeE.getEmail().equals(employeeDTO.getEmail()) || existingEmployeeI.getEmpId().equals(employeeDTO.getEmpId()))
-            {
+            if (existingEmployeeE.getEmail().equals(employeeDTO.getEmail()) || existingEmployeeI.getEmpId().equals(employeeDTO.getEmpId())) {
                 model.addAttribute("employee", employeeDTO);
                 return "redirect:/signup?error";
             }
@@ -93,5 +89,10 @@ public class EmployeeController {
 
     }
 
+
+    @GetMapping("/faq")
+    public String questions() {
+        return "faq";
+    }
 
 }

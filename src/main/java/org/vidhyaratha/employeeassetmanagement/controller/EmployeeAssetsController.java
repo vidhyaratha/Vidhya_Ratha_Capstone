@@ -1,22 +1,16 @@
 package org.vidhyaratha.employeeassetmanagement.controller;
 
-import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
-import org.vidhyaratha.employeeassetmanagement.dto.EmployeeAssetsDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.model.Employee;
-import org.vidhyaratha.employeeassetmanagement.model.EmployeeAssets;
-import org.vidhyaratha.employeeassetmanagement.model.EmployeeMaster;
 import org.vidhyaratha.employeeassetmanagement.service.AssetService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeAssetsService;
-import org.vidhyaratha.employeeassetmanagement.service.EmployeeMasterService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeService;
 
 import java.util.List;
@@ -27,10 +21,12 @@ public class EmployeeAssetsController {
 //
     @Autowired
     private EmployeeAssetsService employeeAssetsService;
-    @Autowired
-    private EmployeeMasterService employeeMasterService;
+   // @Autowired
+   // private EmployeeMasterService employeeMasterService;
     @Autowired
     private AssetService assetService;
+    @Autowired
+    private EmployeeService employeeService;
 //
 //
     @ModelAttribute("employeeDTO")
@@ -65,15 +61,15 @@ public class EmployeeAssetsController {
 
 
 @GetMapping("/getEmployeeAssets/{employeeId}")
-public String getEmployeeAssets(@PathVariable String employeeId, Model model)
+public String getEmployeeAssets(@PathVariable String employeeId, Model model,@ModelAttribute("employee") EmployeeDTO employeeDTO)
         {
-        //Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
-        EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+     //   EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
 
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
         model.addAttribute("employeeAssets",employeeAssets);
-        //model.addAttribute("employee",existingEmployee);
-        model.addAttribute("employeeMaster",masterEmployee);
+        model.addAttribute("employee",existingEmployee);
+      //  model.addAttribute("employeeMaster",masterEmployee);
 
         return "userpage";
         }
@@ -134,14 +130,13 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model)
     @GetMapping("/{employeeId}/returnDevice")
     public String returnDevice(@PathVariable String employeeId, Model model)
     {
-        //Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
-
-        EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
+      //  EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
 
         model.addAttribute("employeeAssets",employeeAssets);
-        // model.addAttribute("employee",existingEmployee);
-        model.addAttribute("employeeMaster",masterEmployee);
+        model.addAttribute("employee",existingEmployee);
+       // model.addAttribute("employeeMaster",masterEmployee);
 
         return "returnDevice";
     }
