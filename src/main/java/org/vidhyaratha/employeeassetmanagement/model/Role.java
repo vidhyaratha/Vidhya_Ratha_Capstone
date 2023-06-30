@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @ToString
 @Entity
+@Table(name = "role")
 @AllArgsConstructor
 public class Role {
     @Id
@@ -16,10 +17,10 @@ public class Role {
     @Column(name = "Id")
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "role")
     private String name;
 
-    public Role(String name) {
+    public Role(String role) {
         this.name = name;
     }
 

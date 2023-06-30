@@ -1,13 +1,16 @@
 package org.vidhyaratha.employeeassetmanagement.controller;
 
+
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Employee;
@@ -20,7 +23,14 @@ public class EmployeeController {
 
     private static final Logger logger = LoggerFactory.getLogger(EmployeeController.class);
 
-    private final EmployeeService employeeService;
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
+
+    private  EmployeeService employeeService;
 
     @Autowired
     public EmployeeController(EmployeeService employeeService) {
@@ -41,10 +51,10 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/signin")
-    public String showSigninForm(Model model) {
-        EmployeeDTO employeeDTO = new EmployeeDTO();
-        model.addAttribute("employeeDTO", employeeDTO);
+    @RequestMapping("/signin")
+    public String showSigninForm() {
+//        EmployeeDTO employeeDTO = new EmployeeDTO();
+//        model.addAttribute("employeeDTO", employeeDTO);
         logger.info("Show Sign In page Displayed");
         return "signin";
     }
@@ -65,23 +75,27 @@ public class EmployeeController {
         return "redirect:/signin?logout";
     }
 
-    @PostMapping("/processSignin")
-    public String signinEmployee(@Valid @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
-                                 BindingResult result, Model model) {
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
+//    @PostMapping("/processSignin")
+//    public String signinEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
+//                                 Model model) {
+//
+//        logger.info("Show Sign In page Entered");
+//        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
+//
+//        if (existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword())) {
+//                logger.info("Employee Information Page Displayed");
+//            return "redirect:/getEmployeeAssets" ;
+//        }
+//        else {
+//            logger.info("Sign In Error page Displayed");
+//            return "redirect:/signin?error";
+//        }
+//    }
 
-        if (existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword())) {
-            logger.info("Employee Information Page Displayed");
-            return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
-        } else {
-            logger.info("Sign In Error page Displayed");
-            return "redirect:/signin?error";
-        }
-    }
 
 
     @PostMapping("/saveEmployee")
-    public String saveEmployee(@Valid @ModelAttribute("employee") EmployeeDTO employeeDTO,@RequestParam("gender") String gender,
+    public String saveEmployee(@Valid @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,@RequestParam("gender") String gender,
                                BindingResult result, Model model) {
 
         Employee existingEmployeeI = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
@@ -121,9 +135,9 @@ public class EmployeeController {
     }
 
 
-    @GetMapping("/{employeeId}/editEmployee")
-    public String updateEmployee(@PathVariable String employeeId, Model model) {
-       Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
+    @GetMapping("/editEmployee")
+    public String updateEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model) {
+       Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
         model.addAttribute("employee",existingEmployee);
         return "editprofile";
     }
@@ -137,7 +151,7 @@ public class EmployeeController {
         employeeDTO.setLocation(existingEmployee.getLocation());
         employeeService.saveEmployee(employeeDTO);
         logger.info("Employee Profile Updated successfully");
-        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+        return "redirect:/getEmployeeAssets" ;
 
     }
 

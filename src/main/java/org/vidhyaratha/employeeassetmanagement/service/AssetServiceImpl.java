@@ -57,4 +57,9 @@ public class AssetServiceImpl implements AssetService {
         assetRepository.save(asset);
 
     }
+
+    @Override
+    public void addAsset(Asset asset) {
+        assetRepository.save(asset);
+    }
 }

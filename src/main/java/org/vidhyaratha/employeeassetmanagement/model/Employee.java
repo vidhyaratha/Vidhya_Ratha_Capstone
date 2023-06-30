@@ -40,10 +40,19 @@ public class Employee {
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "employee_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "employees_roles",
+            joinColumns = @JoinColumn(name = "empId"),
+            inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Collection<Role> roles;
+
+    public Employee(String empId, String email, String password, String empName, String gender, String location) {
+        this.empId = empId;
+        this.email = email;
+        this.password = password;
+        this.empName = empName;
+        this.gender = gender;
+        this.location = location;
+    }
 }
 
 

@@ -1,6 +1,8 @@
 package org.vidhyaratha.employeeassetmanagement.controller;
 
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,23 +20,22 @@ import java.util.List;
 @Controller
 @SessionAttributes("employeeDTO")
 public class EmployeeAssetsController {
-//
+
     @Autowired
     private EmployeeAssetsService employeeAssetsService;
-   // @Autowired
-   // private EmployeeMasterService employeeMasterService;
+
     @Autowired
     private AssetService assetService;
     @Autowired
     private EmployeeService employeeService;
-//
-//
+
+
     @ModelAttribute("employeeDTO")
     public EmployeeDTO setUpEmployee()
     {
         return new EmployeeDTO();
     }
-//
+
 //    @DeleteMapping("/deleteDevice/{assetId}")
 //    public String deleteEmployeeById(@PathVariable("assetId") String assetId,
 //                                   @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
@@ -60,16 +61,16 @@ public class EmployeeAssetsController {
 ////
 
 
-@GetMapping("/getEmployeeAssets/{employeeId}")
-public String getEmployeeAssets(@PathVariable String employeeId, Model model,@ModelAttribute("employee") EmployeeDTO employeeDTO)
+@RequestMapping("/getEmployeeAssets")
+public String getEmployeeAssets(Model model,
+                                @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
         {
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
-     //   EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
 
-        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeDTO.getEmpId());
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
-      //  model.addAttribute("employeeMaster",masterEmployee);
+
 
         return "userpage";
         }
@@ -80,7 +81,7 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
     @GetMapping("/showDevice")
     public String showAssignedDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
     {
-        return "redirect:/getEmployeeAssets/"+ employeeDTO.getEmpId();
+        return "redirect:/getEmployeeAssets";
     }
 
 
@@ -98,7 +99,7 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
         }
 
         employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId());
-        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+        return "redirect:/getEmployeeAssets" ;
     }
 
 
@@ -106,7 +107,7 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
     public String handleRuntimeException(RuntimeException ex,@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO ,Model model)
     {
         model.addAttribute("errorMessage", ex.getMessage());
-        model.addAttribute("employeeDTO0", employeeDTO);
+        model.addAttribute("employeeDTO", employeeDTO);
         return "error";
     }
 
@@ -114,29 +115,27 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
 
 
 
+//
+//    @GetMapping("/returnDevice")
+//    public String showReturnDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+//    {
+//        return "redirect:/returnDevice";
+//    }
+
+
+
+
+
+
 
     @GetMapping("/returnDevice")
-    public String showReturnDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    public String returnDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model)
     {
-        return "redirect:/"+ employeeDTO.getEmpId() +"/returnDevice";
-    }
-
-
-
-
-
-
-
-    @GetMapping("/{employeeId}/returnDevice")
-    public String returnDevice(@PathVariable String employeeId, Model model)
-    {
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeId);
-        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeId);
-      //  EmployeeMaster masterEmployee = employeeMasterService.getEmployeeByEmpId(employeeId);
+        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeDTO.getEmpId());
 
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
-       // model.addAttribute("employeeMaster",masterEmployee);
 
         return "returnDevice";
     }
@@ -153,7 +152,7 @@ public String getEmployeeAssets(@PathVariable String employeeId, Model model,@Mo
 
         employeeAssetsService.deleteByAssetId(selectedAssetId);
 
-        return "redirect:/getEmployeeAssets/" + employeeDTO.getEmpId();
+        return "redirect:/getEmployeeAssets" ;
     }
 
 

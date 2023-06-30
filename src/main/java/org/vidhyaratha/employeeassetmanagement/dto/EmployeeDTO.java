@@ -3,6 +3,9 @@ package org.vidhyaratha.employeeassetmanagement.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import org.vidhyaratha.employeeassetmanagement.model.Role;
+
+import java.util.Collection;
 
 
 public class EmployeeDTO {
@@ -26,17 +29,19 @@ public class EmployeeDTO {
     @NotEmpty
     private String location;
 
+    private Collection<Role> roles;
 
     public EmployeeDTO() {
     }
 
-    public EmployeeDTO(String empId, String empName, String email, String password, String gender, String location) {
+    public EmployeeDTO(String empId, String empName, String email, String password, String gender, String location, Collection<Role> roles) {
         this.empId = empId;
         this.empName = empName;
         this.email = email;
         this.password = password;
         this.gender = gender;
         this.location = location;
+        this.roles = roles;
     }
 
     public String getEmpId() {
@@ -85,5 +90,13 @@ public class EmployeeDTO {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }

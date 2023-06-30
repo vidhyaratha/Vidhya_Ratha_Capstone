@@ -78,7 +78,7 @@
                <div class="form-outline mb-4">
                 <div th:if="${param.success}">
                     <div class="alert alert-info">
-                        You have successfully registered!
+                        You have successfully registered! Please Sign in!
                     </div>
                 </div>
                 <div th:if="${param.error}">
@@ -109,14 +109,10 @@
 
                 <div class="form-outline mb-4">
                     <label class="form-label" ><b>Gender</b></label>
-                     <div class = "">
                      <input type="radio" value="male" name="gender"  th:checked="${employeeDTO.gender == 'male'}" required />
                     <label>Male</label>
-                     </div>
-                    <div class = "">
                     <input type="radio" value="female" name="gender"  th:checked="${employeeDTO.gender == 'female'}" required/>
                     <label>Female</label>
-                    </div>
                     <p th:errors="*{gender}"  class="text-danger" th:if="${#fields.hasErrors('gender')}" ></p>
                 </div>
 

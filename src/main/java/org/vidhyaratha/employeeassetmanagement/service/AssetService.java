@@ -13,4 +13,5 @@ public interface AssetService {
 
     public List<String> getAllAssetTypes();
 
+    public void addAsset(Asset asset);
 }
