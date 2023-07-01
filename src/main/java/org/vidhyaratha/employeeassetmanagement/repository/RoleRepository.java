@@ -13,6 +13,6 @@ public interface RoleRepository extends CrudRepository<Role, Long> {
 
     public Role findRoleByName(String name);
 
-    @Query(value = "select * from role where role.id= (select roleId from employees_roles where empId = :empId)", nativeQuery = true)
-    public List<Role> findRoleByEmployee(@Param("empId") String empId);
+    @Query(value = "select * from role where role.id= (select roleId from users_roles where empId = :id)", nativeQuery = true)
+    public List<Role> findRoleByUser(@Param("id") String id);
 }

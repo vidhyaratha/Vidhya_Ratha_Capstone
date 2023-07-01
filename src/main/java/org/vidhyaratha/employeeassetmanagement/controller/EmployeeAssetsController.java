@@ -3,23 +3,27 @@ package org.vidhyaratha.employeeassetmanagement.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
+import jakarta.ws.rs.Path;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
-import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
+import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.service.AssetService;
 import org.vidhyaratha.employeeassetmanagement.service.EmployeeAssetsService;
-import org.vidhyaratha.employeeassetmanagement.service.EmployeeService;
+import org.vidhyaratha.employeeassetmanagement.service.UserService;
 
 import java.util.List;
 
 @Controller
-@SessionAttributes("employeeDTO")
+@SessionAttributes("userDTO")
 public class EmployeeAssetsController {
+
 
     @Autowired
     private EmployeeAssetsService employeeAssetsService;
@@ -27,13 +31,13 @@ public class EmployeeAssetsController {
     @Autowired
     private AssetService assetService;
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
 
-    @ModelAttribute("employeeDTO")
-    public EmployeeDTO setUpEmployee()
+    @ModelAttribute("userDTO")
+    public UserDTO setUpEmployee()
     {
-        return new EmployeeDTO();
+        return new UserDTO();
     }
 
 //    @DeleteMapping("/deleteDevice/{assetId}")
@@ -63,11 +67,17 @@ public class EmployeeAssetsController {
 
 @RequestMapping("/getEmployeeAssets")
 public String getEmployeeAssets(Model model,
-                                @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+                                @ModelAttribute("userDTO") UserDTO userDTO)
         {
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
 
-        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeDTO.getEmpId());
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String username = authentication.getName();
+
+
+        //User existingEmployee = userService.findUserByEmpId(userDTO.getEmpId());
+            User existingEmployee = userService.findUserByEmail(username);
+
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(existingEmployee.getEmpId());
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
 
@@ -79,7 +89,7 @@ public String getEmployeeAssets(Model model,
 
 
     @GetMapping("/showDevice")
-    public String showAssignedDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+    public String showAssignedDevice(@ModelAttribute("userDTO") UserDTO userDTO)
     {
         return "redirect:/getEmployeeAssets";
     }
@@ -89,8 +99,13 @@ public String getEmployeeAssets(Model model,
 
     @PostMapping("/processRequestDevice")
     public String processRequestDevice(@RequestParam("selectedType") String selectedAssetType,
-                                       @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model)
+                                       @ModelAttribute("userDTO") UserDTO userDTO, Model model)
     {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User existingEmployee = userService.findUserByEmail(username);
+
         Asset asset = assetService.assignAssetToAssignedStatus(selectedAssetType, "Unassigned");
         if(asset.getAssetType()==null)
         {
@@ -98,16 +113,16 @@ public String getEmployeeAssets(Model model,
 
         }
 
-        employeeAssetsService.assignAsset(employeeDTO.getEmpId(), asset.getAssetId());
+        employeeAssetsService.assignAsset(existingEmployee.getEmpId(), asset.getAssetId());
         return "redirect:/getEmployeeAssets" ;
     }
 
 
     @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException ex,@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO ,Model model)
+    public String handleRuntimeException(RuntimeException ex,@ModelAttribute("userDTO") UserDTO userDTO ,Model model)
     {
         model.addAttribute("errorMessage", ex.getMessage());
-        model.addAttribute("employeeDTO", employeeDTO);
+        model.addAttribute("userDTO", userDTO);
         return "error";
     }
 
@@ -129,10 +144,13 @@ public String getEmployeeAssets(Model model,
 
 
     @GetMapping("/returnDevice")
-    public String returnDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model)
+    public String returnDevice(@ModelAttribute("userDTO") UserDTO userDTO, Model model)
     {
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
-        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(employeeDTO.getEmpId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User existingEmployee = userService.findUserByEmail(username);
+        List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(existingEmployee.getEmpId());
 
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
@@ -146,7 +164,7 @@ public String getEmployeeAssets(Model model,
     // To update the status of the asset
     @PostMapping("/processReturnDevice")
     public String processReturnDevice(@RequestParam("selectedAsset") String selectedAssetId,
-                                      @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
+                                      @ModelAttribute("userDTO") UserDTO userDTO)
     {
         assetService.updateAssetStatus(selectedAssetId,"Unassigned");
 

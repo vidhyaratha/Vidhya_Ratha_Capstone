@@ -2,33 +2,35 @@ package org.vidhyaratha.employeeassetmanagement.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
-import org.vidhyaratha.employeeassetmanagement.dto.EmployeeDTO;
+import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.service.AssetService;
-import org.vidhyaratha.employeeassetmanagement.service.EmployeeService;
+import org.vidhyaratha.employeeassetmanagement.service.UserService;
 
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
 @Controller
-@SessionAttributes("employeeDTO")
+@SessionAttributes("userDTO")
 public class AssetController {
 
     @Autowired
     private AssetService assetService;
 
     @Autowired
-    private EmployeeService employeeService;
+    private UserService userService;
 
-    @ModelAttribute("employeeDTO")
-    public EmployeeDTO setUpEmployee() {
-        return new EmployeeDTO();
+    @ModelAttribute("userDTO")
+    public UserDTO setUpUser() {
+        return new UserDTO();
     }
 
 
@@ -39,9 +41,12 @@ public class AssetController {
 
 
     @GetMapping("/requestDevice")
-    public String requestDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO, Model model) {
+    public String requestDevice(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
 
-        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User existingEmployee = userService.findUserByEmail(username);
         List<String> assetTypeList = assetService.getAllAssetTypes();
 
         model.addAttribute("assetTypes", assetTypeList);

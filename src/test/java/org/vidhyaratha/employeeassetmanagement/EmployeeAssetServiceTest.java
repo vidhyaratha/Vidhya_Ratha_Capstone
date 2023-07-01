@@ -5,10 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.junit.Assert;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
 import org.vidhyaratha.employeeassetmanagement.model.EmployeeAssets;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.repository.EmployeeAssetsRepository;
-import org.vidhyaratha.employeeassetmanagement.repository.EmployeeRepository;
+import org.vidhyaratha.employeeassetmanagement.repository.UserRepository;
 
 import java.util.List;
 
@@ -17,14 +17,14 @@ import java.util.List;
 @DisplayName("EmployeeAssetService Test Class")
 public class EmployeeAssetServiceTest {
 
-    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
     private final EmployeeAssetsRepository employeeAssetsRepository;
 
 
     @Autowired
-    public EmployeeAssetServiceTest(EmployeeRepository employeeRepository, EmployeeAssetsRepository employeeAssetsRepository) {
-        this.employeeRepository = employeeRepository;
+    public EmployeeAssetServiceTest(UserRepository userRepository, EmployeeAssetsRepository employeeAssetsRepository) {
+        this.userRepository = userRepository;
         this.employeeAssetsRepository = employeeAssetsRepository;
     }
 
@@ -32,8 +32,8 @@ public class EmployeeAssetServiceTest {
     @Test
     @DisplayName("Test Case : Validate Valid Employee Id")
     public void getAssetsByEmployeeIdValidTest() {
-        Employee employee = employeeRepository.findEmployeeByEmpId("EID123");
-        List<EmployeeAssets> employeeAssetList = employeeAssetsRepository.findByEmployee(employee);
+        User user = userRepository.findUserByEmpId("EID123");
+        List<EmployeeAssets> employeeAssetList = employeeAssetsRepository.findByUser(user);
         Assert.assertNotNull(employeeAssetList);
     }
 
@@ -41,8 +41,8 @@ public class EmployeeAssetServiceTest {
     @Test
     @DisplayName("Test Case : Validate Invalid Employee Id")
     public void getAllAssetsByEmployeeIdInvalidTest() {
-        Employee employee = employeeRepository.findEmployeeByEmpId("EIDabc");
-        List<EmployeeAssets> employeeAssetList = employeeAssetsRepository.findByEmployee(employee);
+        User user = userRepository.findUserByEmpId("EIDabc");
+        List<EmployeeAssets> employeeAssetList = employeeAssetsRepository.findByUser(user);
         Assert.assertNotNull(employeeAssetList);
     }
 }

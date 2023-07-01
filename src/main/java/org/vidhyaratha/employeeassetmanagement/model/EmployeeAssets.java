@@ -27,7 +27,7 @@ public class EmployeeAssets {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "empId", referencedColumnName = "empId")
-    private Employee employee;
+    private User user;
 
 
     @ManyToOne(fetch = FetchType.LAZY)

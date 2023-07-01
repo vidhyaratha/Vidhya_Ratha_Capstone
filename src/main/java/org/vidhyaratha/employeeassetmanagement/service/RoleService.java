@@ -14,5 +14,5 @@ public interface RoleService {
     public void saveRole(Role role);
 //    public Role findRoleByRoleName(String name);
     public List<Role> getAllRoles();
-    public List<Role> getRolesByEmployee(String empId);
+    public List<Role> getRolesByUser(String empId);
 }

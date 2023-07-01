@@ -4,11 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.model.EmployeeAssets;
 import org.vidhyaratha.employeeassetmanagement.repository.AssetRepository;
 import org.vidhyaratha.employeeassetmanagement.repository.EmployeeAssetsRepository;
-import org.vidhyaratha.employeeassetmanagement.repository.EmployeeRepository;
+import org.vidhyaratha.employeeassetmanagement.repository.UserRepository;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,24 +20,24 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
     private final AssetRepository assetRepository;
 
-    private final EmployeeRepository employeeRepository;
+    private final UserRepository userRepository;
 
     private final EmployeeAssetsRepository employeeAssetsRepository;
 
     @Autowired
-    public EmployeeAssetsServiceImpl(AssetRepository assetRepository, EmployeeRepository employeeRepository, EmployeeAssetsRepository employeeAssetsRepository) {
+    public EmployeeAssetsServiceImpl(AssetRepository assetRepository, UserRepository userRepository, EmployeeAssetsRepository employeeAssetsRepository) {
         this.assetRepository = assetRepository;
-        this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
         this.employeeAssetsRepository = employeeAssetsRepository;
     }
 
 
     @Override
     public List<AssetDTO> getAssetsByEmployeeId(String empId) {
-        Employee employee = employeeRepository.findEmployeeByEmpId(empId);
+        User user = userRepository.findUserByEmpId(empId);
 
 
-        List<EmployeeAssets> employeeAssets = employeeAssetsRepository.findByEmployee(employee);
+        List<EmployeeAssets> employeeAssets = employeeAssetsRepository.findByUser(user);
         List<AssetDTO> assetDTOList = new ArrayList<>();
 
 
@@ -60,10 +60,10 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
     @Override
     public void assignAsset(String empId, String assetId) {
-        Employee employee = employeeRepository.findEmployeeByEmpId(empId);
+        User user = userRepository.findUserByEmpId(empId);
         Asset asset = assetRepository.findByAssetId(assetId);
 
-        List<EmployeeAssets> employeeAssetsList = employeeAssetsRepository.findByEmployee(employee);
+        List<EmployeeAssets> employeeAssetsList = employeeAssetsRepository.findByUser(user);
 
         if(employeeAssetsList.size()<5 && assetId != null)
         {
@@ -71,7 +71,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
             employeeAssets.setAssetAssignedDate(LocalDate.now().toString());
             employeeAssets.setApprovedAdminName("Smith_ADMIN");
 
-            employeeAssets.setEmployee(employee);
+            employeeAssets.setUser(user);
             employeeAssets.setAsset(asset);
 
             employeeAssetsRepository.save(employeeAssets);

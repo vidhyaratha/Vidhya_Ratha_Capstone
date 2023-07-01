@@ -8,7 +8,7 @@ import org.vidhyaratha.employeeassetmanagement.model.Role;
 import java.util.Collection;
 
 
-public class EmployeeDTO {
+public class UserDTO {
 
     @NotEmpty
     private String empId;
@@ -31,10 +31,10 @@ public class EmployeeDTO {
 
     private Collection<Role> roles;
 
-    public EmployeeDTO() {
+    public UserDTO() {
     }
 
-    public EmployeeDTO(String empId, String empName, String email, String password, String gender, String location, Collection<Role> roles) {
+    public UserDTO(String empId, String empName, String email, String password, String gender, String location, Collection<Role> roles) {
         this.empId = empId;
         this.empName = empName;
         this.email = email;

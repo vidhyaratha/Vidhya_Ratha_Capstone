@@ -73,7 +73,7 @@
 
         <div class="form">
 
-            <form id="signup-form"  th:action="@{/saveEmployee}" th:object="${employeeDTO}" method="post">
+            <form id="signup-form"  th:action="@{/saveEmployee}" th:object="${userDTO}" method="post">
 
                <div class="form-outline mb-4">
                 <div th:if="${param.success}">
@@ -91,14 +91,8 @@
 
                 <div class="form-outline mb-4" >
                     <label class="form-label" ><b>Employee ID</b></label>
-                    <input type="text" th:field="*{empId}" id="empid" class="form-control form-control-lg" required />
+                    <input type="text" th:field="*{empId}" id="empid" class="form-control form-control-lg" minlength="4" maxlength="6" required />
                     <p th:errors = "*{empId}" class="text-danger" th:if="${#fields.hasErrors('empId')}"></p>
-                </div>
-
-                <div class="form-outline mb-4" >
-                    <label class="form-label" ><b>Full Name</b></label>
-                    <input type="text" th:field="*{empName}" id="name" class="form-control form-control-lg" required />
-                    <p th:errors = "*{empName}" class="text-danger" th:if="${#fields.hasErrors('empName')}"></p>
                 </div>
 
                 <div class="form-outline mb-4">
@@ -107,11 +101,19 @@
                     <p th:errors="*{email}"  class="text-danger" th:if="${#fields.hasErrors('email')}" ></p>
                 </div>
 
+                <div class="form-outline mb-4" >
+                    <label class="form-label" ><b>Full Name</b></label>
+                    <input type="text" th:field="*{empName}" id="name" class="form-control form-control-lg" required />
+                    <p th:errors = "*{empName}" class="text-danger" th:if="${#fields.hasErrors('empName')}"></p>
+                </div>
+
+
+
                 <div class="form-outline mb-4">
                     <label class="form-label" ><b>Gender</b></label>
-                     <input type="radio" value="male" name="gender"  th:checked="${employeeDTO.gender == 'male'}" required />
+                     <input type="radio" value="male" name="gender"  th:checked="${userDTO.gender == 'male'}" required />
                     <label>Male</label>
-                    <input type="radio" value="female" name="gender"  th:checked="${employeeDTO.gender == 'female'}" required/>
+                    <input type="radio" value="female" name="gender"  th:checked="${userDTO.gender == 'female'}" required/>
                     <label>Female</label>
                     <p th:errors="*{gender}"  class="text-danger" th:if="${#fields.hasErrors('gender')}" ></p>
                 </div>
@@ -131,7 +133,7 @@
 
                 <div class="form-outline mb-4">
                     <label class="form-label"><b>Password</b></label>
-                    <input type="password" th:field="*{password}" id="pwd" class="form-control form-control-lg" required/>
+                    <input type="password" th:field="*{password}" id="pwd" class="form-control form-control-lg" minlength="6" maxlength="15" required/>
                     <p th:errors="*{password}"  class="text-danger" th:if="${#fields.hasErrors('password')}" ></p>
                 </div>
 

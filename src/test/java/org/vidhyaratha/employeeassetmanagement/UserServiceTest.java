@@ -7,16 +7,16 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
-import org.vidhyaratha.employeeassetmanagement.repository.EmployeeRepository;
+import org.vidhyaratha.employeeassetmanagement.model.User;
+import org.vidhyaratha.employeeassetmanagement.repository.UserRepository;
 
 
 @SpringBootTest(classes = DemoApplication.class)
 @DisplayName("EmployeeService Test Class")
-public class EmployeeServiceTest {
+public class UserServiceTest {
 
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private UserRepository userRepository;
 
 
 
@@ -24,7 +24,7 @@ public class EmployeeServiceTest {
     @DisplayName("Test Case : Validate Employee by Valid Email")
     public void findEmployeeByValidEmailTest()
     {
-        Employee employee = employeeRepository.findEmployeeByEmail("test123@gmail.com");
+        User employee = userRepository.findUserByEmail("test123@gmail.com");
         Assert.assertEquals("test123@gmail.com", employee.getEmail());
     }
 
@@ -35,7 +35,7 @@ public class EmployeeServiceTest {
     @ValueSource(strings = {"cstartin3@flickr.com","qllorens2@howstuffworks.com"})
     public void findEmployeeByInvalidEmailTest(String testExpected)
     {
-        Employee employee = employeeRepository.findEmployeeByEmail(testExpected);
+        User employee = userRepository.findUserByEmail(testExpected);
         Assert.assertEquals(null,employee);
     }
 
@@ -46,7 +46,7 @@ public class EmployeeServiceTest {
     @DisplayName("Test Case : Validate Employee by Valid Employee Id")
     public void findEmployeeByEmpIdTest()
     {
-        Employee employee = employeeRepository.findEmployeeByEmpId("EID123");
+        User employee = userRepository.findUserByEmpId("EID123");
         Assert.assertEquals("EID123", employee.getEmpId());
     }
 
@@ -54,14 +54,14 @@ public class EmployeeServiceTest {
     @DisplayName("Test Case : Validate Sign up ")
     public void saveEmployeeTest()
     {
-        Employee employee = new Employee();
+        User employee = new User();
         employee.setEmpId("EIDvalidatesignuptest");
         employee.setEmail("validatesignuptest@gmail.com");
         employee.setPassword("testvalidatesignup");
         employee.setLocation("San Antonio");
         employee.setEmpName("David Harris");
         employee.setGender("male");
-        Assert.assertNotNull(employeeRepository.save(employee));
+        Assert.assertNotNull(userRepository.save(employee));
     }
 
 }

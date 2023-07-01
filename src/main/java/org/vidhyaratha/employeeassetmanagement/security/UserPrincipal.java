@@ -3,7 +3,7 @@ package org.vidhyaratha.employeeassetmanagement.security;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.model.Role;
 
 
@@ -11,14 +11,14 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class EmployeePrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails {
 
-    private Employee employee;
+    private User user;
     private List<Role> roles;
 
-    public EmployeePrincipal(Employee employee, List<Role> roles) {
+    public UserPrincipal(User user, List<Role> roles) {
         super();
-        this.employee = employee;
+        this.user = user;
         this.roles = roles;
     }
 
@@ -35,12 +35,12 @@ public class EmployeePrincipal implements UserDetails {
 
     @Override
     public String getPassword() {
-        return this.employee.getPassword();
+        return this.user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return this.employee.getEmail();
+        return this.user.getEmail();
     }
 
     @Override

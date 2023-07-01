@@ -1,21 +1,23 @@
 package org.vidhyaratha.employeeassetmanagement.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Collection;
+import java.util.List;
 
 
-@Table(name = "employee")
+@Table(name = "user")
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Employee {
+public class User {
 
 
     @Id
@@ -40,12 +42,12 @@ public class Employee {
 
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = "employees_roles",
+    @JoinTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "empId"),
             inverseJoinColumns = @JoinColumn(name = "roleId"))
     private Collection<Role> roles;
 
-    public Employee(String empId, String email, String password, String empName, String gender, String location) {
+    public User(String empId, String email, String password, String empName, String gender, String location) {
         this.empId = empId;
         this.email = email;
         this.password = password;
@@ -53,6 +55,8 @@ public class Employee {
         this.gender = gender;
         this.location = location;
     }
+
+
 }
 
 

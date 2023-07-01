@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.vidhyaratha.employeeassetmanagement.service.EmployeeServiceImpl;
+import org.vidhyaratha.employeeassetmanagement.service.UserServiceImpl;
 
 
 //import org.springframework.context.annotation.Bean;
@@ -35,7 +35,7 @@ import org.vidhyaratha.employeeassetmanagement.service.EmployeeServiceImpl;
 public class SecurityConfiguration {
 
     @Autowired
-    private EmployeeServiceImpl employeeService;
+    private UserServiceImpl userService;
 
 
     @Bean
@@ -43,7 +43,7 @@ public class SecurityConfiguration {
     {
         DaoAuthenticationProvider authenticationProvider= new DaoAuthenticationProvider();
         authenticationProvider.setPasswordEncoder(passwordEncoder());
-        authenticationProvider.setUserDetailsService(employeeService);
+        authenticationProvider.setUserDetailsService(userService);
         return authenticationProvider;
     }
 
@@ -62,12 +62,13 @@ public class SecurityConfiguration {
                         (auth) -> auth
                                 .requestMatchers("/","/home",
                                         "/signin","/signup","/saveEmployee",
-                                        "/styles/*", "/js/*","/images/*" ).permitAll()
-                                .requestMatchers("/getEmployeeAssets",
+                                        "/styles/*", "/js/*","/images/*" ,"/getEmployeeAssets",
                                         "/showDevice",
                                         "/requestDevice","/processRequestDevice",
                                         "/returnDevice","/processReturnDevice",
-                                        "/editEmployeeInformation","/editEmployee","/processEditProfile","/logout").hasAnyRole( "USER","ADMIN")
+                                        "/editEmployeeInformation","/editEmployee","/processEditProfile","/logout").permitAll()
+                                .requestMatchers("")
+                                .hasAnyRole( "USER","ADMIN")
                                 .anyRequest().authenticated()
                 )
 

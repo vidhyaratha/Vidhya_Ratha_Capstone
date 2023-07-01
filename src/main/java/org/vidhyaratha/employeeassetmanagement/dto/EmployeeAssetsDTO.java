@@ -2,24 +2,24 @@ package org.vidhyaratha.employeeassetmanagement.dto;
 
 
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
-import org.vidhyaratha.employeeassetmanagement.model.Employee;
+import org.vidhyaratha.employeeassetmanagement.model.User;
 
 
 public class EmployeeAssetsDTO {
     private Long id;
     private String assetAssignedDate;
     private String approvedAdminName;
-    private Employee employee;
+    private User user;
     private Asset asset;
 
     public EmployeeAssetsDTO() {
     }
 
-    public EmployeeAssetsDTO(Long id, String assetAssignedDate, String approvedAdminName, Employee employee, Asset asset) {
+    public EmployeeAssetsDTO(Long id, String assetAssignedDate, String approvedAdminName, User user, Asset asset) {
         this.id = id;
         this.assetAssignedDate = assetAssignedDate;
         this.approvedAdminName = approvedAdminName;
-        this.employee = employee;
+        this.user = user;
         this.asset = asset;
     }
 
@@ -48,12 +48,12 @@ public class EmployeeAssetsDTO {
     }
 
 
-    public Employee getEmployee() {
-        return employee;
+    public User getUser() {
+        return user;
     }
 
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Asset getAsset() {
