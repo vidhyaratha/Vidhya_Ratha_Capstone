@@ -55,8 +55,6 @@ public class UserController {
 
     @RequestMapping("/signin")
     public String showSigninForm(Model model) {
-//        UserDTO userDTO = new UserDTO();
-//        model.addAttribute("userDTO", userDTO);
         logger.info("Show Sign In page Displayed");
         return "signin";
     }
@@ -76,24 +74,6 @@ public class UserController {
         logger.info("Logged out successfully");
         return "redirect:/signin?logout";
     }
-
-//    @PostMapping("/processSignin")
-//    public String signinEmployee(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO,
-//                                 Model model) {
-//
-//        logger.info("Show Sign In page Entered");
-//        Employee existingEmployee = employeeService.findEmployeeByEmpId(employeeDTO.getEmpId());
-//
-//        if (existingEmployee != null && existingEmployee.getPassword().equals(employeeDTO.getPassword())) {
-//                logger.info("Employee Information Page Displayed");
-//            return "redirect:/getEmployeeAssets" ;
-//        }
-//        else {
-//            logger.info("Sign In Error page Displayed");
-//            return "redirect:/signin?error";
-//        }
-//    }
-
 
 
     @PostMapping("/saveEmployee")
@@ -126,13 +106,9 @@ public class UserController {
 
 
 
-
-
-
-
-
     @GetMapping("/editEmployeeInformation")
     public String showupdateEmployee(@ModelAttribute("userDTO") UserDTO userDTO) {
+        logger.info("Employee Edit Profile Displayed");
         return "redirect:/editEmployee";
     }
 

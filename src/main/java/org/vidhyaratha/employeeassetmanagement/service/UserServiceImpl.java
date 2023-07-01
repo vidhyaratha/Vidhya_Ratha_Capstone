@@ -4,6 +4,8 @@ package org.vidhyaratha.employeeassetmanagement.service;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.GrantedAuthority;
@@ -35,6 +37,7 @@ public class UserServiceImpl implements UserService {
 
     private final RoleService roleService;
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository,@Lazy BCryptPasswordEncoder encoder, RoleService roleService) {
@@ -65,6 +68,7 @@ public class UserServiceImpl implements UserService {
         user.setPassword(encoder.encode(user.getPassword()));
         user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_USER")));
 
+        logger.info("Employee sign up success");
        userRepository.save(user);
     }
 
@@ -81,6 +85,8 @@ public class UserServiceImpl implements UserService {
             throw new UsernameNotFoundException("Invalid username or password.");
         }
         //return new UserPrincipal(user, roleService.getRolesByUser(user.getEmpId()));
+
+        logger.info("Employee sign in success");
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),
                 mapRolesToAuthorities(user.getRoles()));
 

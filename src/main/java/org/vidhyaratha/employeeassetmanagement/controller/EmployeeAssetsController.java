@@ -4,6 +4,9 @@ package org.vidhyaratha.employeeassetmanagement.controller;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.ws.rs.Path;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -20,6 +23,7 @@ import org.vidhyaratha.employeeassetmanagement.service.UserService;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 @SessionAttributes("userDTO")
 public class EmployeeAssetsController {
@@ -33,36 +37,13 @@ public class EmployeeAssetsController {
     @Autowired
     private UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeAssetsController.class);
 
     @ModelAttribute("userDTO")
     public UserDTO setUpEmployee()
     {
         return new UserDTO();
     }
-
-//    @DeleteMapping("/deleteDevice/{assetId}")
-//    public String deleteEmployeeById(@PathVariable("assetId") String assetId,
-//                                   @ModelAttribute("employeeDTO") EmployeeDTO employeeDTO)
-//    {
-//        employeeAssetsService.deleteAssetById(assetId);
-//        assetService.updateAssetStatus(assetId,"unassigned");
-//        return "userpage";
-//    }
-//
-//
-//
-//
-//
-//
-//////    @GetMapping("/getEmployeeAssets")
-//////    public String getEmployeeAssets(@Valid @ModelAttribute("employeeAssetsDTO") EmployeeAssetsDTO employeeAssetsDTO,
-//////                                    String empId, BindingResult result, Model model) {
-//////        List<EmployeeAssetsDTO> employeeAssetsDto = employeeAssetsService.findAllAssetsByEmpId("EID123");
-//////        model.addAttribute("employeeAssets",employeeAssetsDto);
-//////
-//////        return "success";
-//////    }
-////
 
 
 @RequestMapping("/getEmployeeAssets")
@@ -73,19 +54,14 @@ public String getEmployeeAssets(Model model,
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             String username = authentication.getName();
 
-
-        //User existingEmployee = userService.findUserByEmpId(userDTO.getEmpId());
             User existingEmployee = userService.findUserByEmail(username);
 
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(existingEmployee.getEmpId());
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
-
-
+        logger.info("Employee details page Displayed");
         return "userpage";
         }
-
-
 
 
     @GetMapping("/showDevice")
@@ -93,9 +69,6 @@ public String getEmployeeAssets(Model model,
     {
         return "redirect:/getEmployeeAssets";
     }
-
-
-
 
     @PostMapping("/processRequestDevice")
     public String processRequestDevice(@RequestParam("selectedType") String selectedAssetType,
@@ -114,6 +87,7 @@ public String getEmployeeAssets(Model model,
         }
 
         employeeAssetsService.assignAsset(existingEmployee.getEmpId(), asset.getAssetId());
+        logger.info("Process request for new device request");
         return "redirect:/getEmployeeAssets" ;
     }
 
@@ -123,6 +97,7 @@ public String getEmployeeAssets(Model model,
     {
         model.addAttribute("errorMessage", ex.getMessage());
         model.addAttribute("userDTO", userDTO);
+        logger.info("Exception error");
         return "error";
     }
 

@@ -1,5 +1,8 @@
 package org.vidhyaratha.employeeassetmanagement.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
@@ -14,7 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
@@ -23,6 +26,8 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
     private final UserRepository userRepository;
 
     private final EmployeeAssetsRepository employeeAssetsRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(EmployeeAssetsServiceImpl.class);
 
     @Autowired
     public EmployeeAssetsServiceImpl(AssetRepository assetRepository, UserRepository userRepository, EmployeeAssetsRepository employeeAssetsRepository) {
@@ -50,7 +55,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
             assetDTO.setAssetType(asset.getAssetType());
             assetDTO.setAssetCreatedDate(asset.getAssetCreatedDate());
             assetDTO.setStatus(asset.getStatus());
-
+            logger.info("Retrieve assest information by employee id - success ");
             assetDTOList.add(assetDTO);
         }
 
@@ -73,7 +78,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
             employeeAssets.setUser(user);
             employeeAssets.setAsset(asset);
-
+            logger.info("Assign a new device to the employee - success");
             employeeAssetsRepository.save(employeeAssets);
         }
         else
@@ -93,6 +98,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
         if (employeeAsset != null) {
             employeeAssetsRepository.deleteById(employeeAsset.getId());
+            logger.info("Assest deleted sucessfully from employeeassest entity");
         }
     }
 

@@ -1,6 +1,9 @@
 package org.vidhyaratha.employeeassetmanagement.controller;
 
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +21,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Random;
 
+@Slf4j
 @Controller
 @SessionAttributes("userDTO")
 public class AssetController {
@@ -28,17 +32,12 @@ public class AssetController {
     @Autowired
     private UserService userService;
 
+    private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
+
     @ModelAttribute("userDTO")
     public UserDTO setUpUser() {
         return new UserDTO();
     }
-
-
-//    @GetMapping("/requestDevice")
-//    public String showRequestDevice(@ModelAttribute("employeeDTO") EmployeeDTO employeeDTO) {
-//        return "redirect:/" + employeeDTO.getEmpId() + "/requestDevice";
-//    }
-
 
     @GetMapping("/requestDevice")
     public String requestDevice(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
@@ -51,6 +50,7 @@ public class AssetController {
 
         model.addAttribute("assetTypes", assetTypeList);
         model.addAttribute("employee",existingEmployee);
+        logger.info("Redirect employee to request a new device");
 
         return "requestdevice";
     }
@@ -62,6 +62,7 @@ public class AssetController {
         AssetDTO assetDTO = new AssetDTO();
         model.addAttribute("assetTypes", assetTypeList);
         model.addAttribute("assetDTO",assetDTO);
+        logger.info("Asset types displayed from Asset Entity ");
 
 
         return "addnewasset";
@@ -87,6 +88,7 @@ public class AssetController {
         model.addAttribute("assetTypes", assetTypeList);
 
         model.addAttribute("successMessage","New Asset created");
+        logger.info("New assest created by admin user");
         return "addnewasset";
 
     }

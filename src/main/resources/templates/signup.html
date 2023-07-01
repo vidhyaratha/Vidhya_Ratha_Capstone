@@ -91,7 +91,7 @@
 
                 <div class="form-outline mb-4" >
                     <label class="form-label" ><b>Employee ID</b></label>
-                    <input type="text" th:field="*{empId}" id="empid" class="form-control form-control-lg" minlength="4" maxlength="6" required />
+                    <input type="text" th:field="*{empId}" id="empid" class="form-control form-control-lg" minlength="4" maxlength="8" required />
                     <p th:errors = "*{empId}" class="text-danger" th:if="${#fields.hasErrors('empId')}"></p>
                 </div>
 

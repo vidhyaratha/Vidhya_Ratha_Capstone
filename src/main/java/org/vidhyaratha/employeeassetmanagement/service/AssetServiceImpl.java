@@ -1,7 +1,11 @@
 package org.vidhyaratha.employeeassetmanagement.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.vidhyaratha.employeeassetmanagement.controller.UserController;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.repository.AssetRepository;
 
@@ -9,11 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 
+@Slf4j
 @Service
 public class AssetServiceImpl implements AssetService {
 
 
     private final AssetRepository assetRepository;
+    private static final Logger logger = LoggerFactory.getLogger(AssetServiceImpl.class);
 
 
     @Autowired
@@ -35,6 +41,7 @@ public class AssetServiceImpl implements AssetService {
         if (!unassignedAssets.isEmpty()) {
             newAsset = unassignedAssets.get(0);
             newAsset.setStatus("Assigned");
+            logger.info("Set new assest status to assigned");
             assetRepository.save(newAsset);
         }
 
@@ -54,6 +61,7 @@ public class AssetServiceImpl implements AssetService {
     public void updateAssetStatus(String assetId, String status) {
         Asset asset = assetRepository.findByAssetId(assetId);
         asset.setStatus(status);
+        logger.info("Updated assest status succesfully- "+ status);
         assetRepository.save(asset);
 
     }

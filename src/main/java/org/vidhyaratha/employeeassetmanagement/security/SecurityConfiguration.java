@@ -67,8 +67,7 @@ public class SecurityConfiguration {
                                         "/requestDevice","/processRequestDevice",
                                         "/returnDevice","/processReturnDevice",
                                         "/editEmployeeInformation","/editEmployee","/processEditProfile","/logout").permitAll()
-                                .requestMatchers("")
-                                .hasAnyRole( "USER","ADMIN")
+                                .requestMatchers("/addNewAsset").hasAnyRole( "ADMIN")
                                 .anyRequest().authenticated()
                 )
 
