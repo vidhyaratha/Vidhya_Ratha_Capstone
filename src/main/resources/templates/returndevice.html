@@ -24,7 +24,8 @@
       font-family: "Roboto";
     }
   </style>
-</head>
+
+   </head>
 
 <body>
 <nav class="navbar navbar-dark bg-dark fixed-top">
@@ -112,15 +113,22 @@
 
                             <div class="form-outline mb-4">
                                 <label class="form-label" ><b>Select a Device to return</b></label>
-                                <select id="dropdown" th:name="selectedAsset">
-                                    <option selected="true" disabled="disabled">Select an option</option>
+                                <select id="assetType" name="assetType" th:name="selectedAsset" required >
                                     <option th:each="assets : ${employeeAssets}" th:value="${assets.assetId}" th:text="${assets.assetName}"></option>-->
-                                    <!--                                <option th:value="option1">Laptop-Mac</option>-->
-                                    <!--                                <option th:value="option2">Laptop-Windows</option>-->
-                                    <!--                                <option th:value="option3">Keyboard</option>-->
-                                    <!--                                <option th:value="option3">Mouse</option>-->
+<!--                                    <div th:if="${#fields.hasErrors('selectedAsset')}" th:errors="*{assetType}" class="error-message">Please select an Asset Type</div>-->
                                 </select>
                             </div>
+
+
+                            <div class="form-outline mb-4">
+                                <label class="form-label" ><b>Any issues with the device</b></label>
+                                <input type="radio"id ="yes" th:value="true" name="issue"   required />
+                                <label for="yes">Yes</label>
+                                <input type="radio" id="no" th:value="false" name="issue"   required/>
+                                <label for="no">No</label>
+<!--                                <p th:errors="*{issue}"  class="text-danger" th:if="${#fields.hasErrors('issue')}" ></p>-->
+                            </div>
+
 
                             <div class="d-flex justify-content-center pt-3">
                                 <button type="submit" class="btn btn-primary btn-lg ms-2">

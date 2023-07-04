@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.vidhyaratha.employeeassetmanagement.Exception.UserNotFoundException;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
@@ -46,6 +47,10 @@ public class AssetController {
         String username = authentication.getName();
 
         User existingEmployee = userService.findUserByEmail(username);
+        if(existingEmployee == null)
+        {
+            throw new UserNotFoundException("Please contact Admin  at admin@admin.org");
+        }
         List<String> assetTypeList = assetService.getAllAssetTypes();
 
         model.addAttribute("assetTypes", assetTypeList);

@@ -1,4 +1,4 @@
-package org.vidhyaratha.employeeassetmanagement;
+package org.vidhyaratha.employeeassetmanagement.ServiceTest;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.vidhyaratha.employeeassetmanagement.DemoApplication;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.repository.AssetRepository;
 
@@ -28,7 +29,7 @@ public class AssetServiceTest {
     @DisplayName("Test Case : Validate Update Asset Status")
     public void updateAssetStatusTest()
     {
-        Asset asset = assetRepository.findByAssetId("AID123");
+        Asset asset = assetRepository.findByAssetId("AID1002");
             asset.setStatus("Unassigned");
             assetRepository.save(asset);
          Assert.assertEquals("Unassigned",asset.getStatus());
@@ -37,7 +38,7 @@ public class AssetServiceTest {
 
     @ParameterizedTest
     @DisplayName("Test Case : Validate Asset Types")
-    @ValueSource(strings = {"Keyboard","Laptop"})
+    @ValueSource(strings = {"Keyboard","Laptop-Mac"})
     public void getAllAssetTypesTest(String testExpected)
     {
        List<String> assetTypes = assetRepository.findDistinctAssetTypes();

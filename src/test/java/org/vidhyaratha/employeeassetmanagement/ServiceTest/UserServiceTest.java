@@ -1,4 +1,4 @@
-package org.vidhyaratha.employeeassetmanagement;
+package org.vidhyaratha.employeeassetmanagement.ServiceTest;
 
 import org.junit.Assert;
 import org.junit.jupiter.api.DisplayName;
@@ -7,6 +7,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.vidhyaratha.employeeassetmanagement.DemoApplication;
 import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.repository.UserRepository;
 
@@ -24,8 +25,8 @@ public class UserServiceTest {
     @DisplayName("Test Case : Validate Employee by Valid Email")
     public void findEmployeeByValidEmailTest()
     {
-        User employee = userRepository.findUserByEmail("test123@gmail.com");
-        Assert.assertEquals("test123@gmail.com", employee.getEmail());
+        User employee = userRepository.findUserByEmail("111@gmail.com");
+        Assert.assertEquals("111@gmail.com", employee.getEmail());
     }
 
 
@@ -46,8 +47,8 @@ public class UserServiceTest {
     @DisplayName("Test Case : Validate Employee by Valid Employee Id")
     public void findEmployeeByEmpIdTest()
     {
-        User employee = userRepository.findUserByEmpId("EID123");
-        Assert.assertEquals("EID123", employee.getEmpId());
+        User employee = userRepository.findUserByEmpId("111");
+        Assert.assertEquals("111", employee.getEmpId());
     }
 
     @Test

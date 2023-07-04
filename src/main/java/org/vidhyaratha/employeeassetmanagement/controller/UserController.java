@@ -14,6 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.vidhyaratha.employeeassetmanagement.Exception.DeviceExceededLimitationException;
+import org.vidhyaratha.employeeassetmanagement.Exception.PasswordMatchException;
+import org.vidhyaratha.employeeassetmanagement.dto.EditProfileDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.service.UserService;
@@ -126,17 +129,31 @@ public class UserController {
 
 
     @PostMapping("/processEditProfile")
-    public String processEditProfile(@ModelAttribute("userDTO") UserDTO userDTO) {
+    public String processEditProfile(@ModelAttribute("userDTO") UserDTO userDTO,
+                                    @RequestParam("confirmPassword") String confirmPassword,
+                                     @RequestParam("password") String password,
+                                     @ModelAttribute("editProfileDTO") EditProfileDTO editProfileDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         User existingEmployee = userService.findUserByEmail(username);
-        userDTO.setEmpId(existingEmployee.getEmpId());
-        userDTO.setGender(existingEmployee.getGender());
-        userDTO.setLocation(existingEmployee.getLocation());
-        userService.saveUser(userDTO);
-        logger.info("Employee Profile Updated successfully");
-        return "redirect:/getEmployeeAssets" ;
+
+
+        if (password.equals(confirmPassword)) {
+            userDTO.setEmail(editProfileDTO.getEmail());
+            userDTO.setEmpName(editProfileDTO.getEmpName());
+            userDTO.setPassword(password);
+            userDTO.setEmpId(existingEmployee.getEmpId());
+            userDTO.setGender(existingEmployee.getGender());
+            userDTO.setLocation(existingEmployee.getLocation());
+            userService.saveUser(userDTO);
+            logger.info("Employee Profile Updated successfully");
+            return "redirect:/getEmployeeAssets";
+        }
+        else
+        {
+            throw new PasswordMatchException("Passwords doesn't match");
+        }
 
     }
 

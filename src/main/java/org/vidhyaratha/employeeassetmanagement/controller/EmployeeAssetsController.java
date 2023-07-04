@@ -12,7 +12,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.vidhyaratha.employeeassetmanagement.Exception.AssetNotFoundException;
+import org.vidhyaratha.employeeassetmanagement.Exception.UserNotFoundException;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
@@ -56,6 +59,11 @@ public String getEmployeeAssets(Model model,
 
             User existingEmployee = userService.findUserByEmail(username);
 
+            if(existingEmployee == null)
+            {
+                throw new UserNotFoundException("Please contact Admin  at admin@admin.org");
+            }
+
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(existingEmployee.getEmpId());
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
@@ -79,10 +87,16 @@ public String getEmployeeAssets(Model model,
 
         User existingEmployee = userService.findUserByEmail(username);
 
+        if(existingEmployee == null)
+        {
+            throw new UserNotFoundException("Please contact Admin  at admin@admin.org");
+        }
+
         Asset asset = assetService.assignAssetToAssignedStatus(selectedAssetType, "Unassigned");
         if(asset.getAssetType()==null)
         {
-            throw new RuntimeException("Please contact Admin");
+            logger.info("No assets found for selected type in unassigned status "+ selectedAssetType);
+            throw new AssetNotFoundException("No assets found for selected type in unassigned status "+ selectedAssetType + "Please contact Admin");
 
         }
 
@@ -92,14 +106,14 @@ public String getEmployeeAssets(Model model,
     }
 
 
-    @ExceptionHandler(RuntimeException.class)
-    public String handleRuntimeException(RuntimeException ex,@ModelAttribute("userDTO") UserDTO userDTO ,Model model)
-    {
-        model.addAttribute("errorMessage", ex.getMessage());
-        model.addAttribute("userDTO", userDTO);
-        logger.info("Exception error");
-        return "error";
-    }
+//    @ExceptionHandler(RuntimeException.class)
+//    public String handleRuntimeException(RuntimeException ex,@ModelAttribute("userDTO") UserDTO userDTO ,Model model)
+//    {
+//        model.addAttribute("errorMessage", ex.getMessage());
+//        model.addAttribute("userDTO", userDTO);
+//        logger.info("Exception error");
+//        return "error";
+//    }
 
 
 
@@ -125,7 +139,14 @@ public String getEmployeeAssets(Model model,
         String username = authentication.getName();
 
         User existingEmployee = userService.findUserByEmail(username);
+
+        if(existingEmployee == null)
+        {
+            throw new UserNotFoundException("Please contact Admin  at admin@admin.org");
+        }
+
         List<AssetDTO> employeeAssets = employeeAssetsService.getAssetsByEmployeeId(existingEmployee.getEmpId());
+
 
         model.addAttribute("employeeAssets",employeeAssets);
         model.addAttribute("employee",existingEmployee);
@@ -138,10 +159,16 @@ public String getEmployeeAssets(Model model,
 
     // To update the status of the asset
     @PostMapping("/processReturnDevice")
-    public String processReturnDevice(@RequestParam("selectedAsset") String selectedAssetId,
+    public String processReturnDevice(@RequestParam("selectedAsset") String selectedAssetId,@RequestParam("issue") boolean issue,
                                       @ModelAttribute("userDTO") UserDTO userDTO)
     {
-        assetService.updateAssetStatus(selectedAssetId,"Unassigned");
+        if(issue)
+        {
+            assetService.updateAssetStatus(selectedAssetId,"Inactive");
+        }
+        else {
+            assetService.updateAssetStatus(selectedAssetId, "Unassigned");
+        }
 
         employeeAssetsService.deleteByAssetId(selectedAssetId);
 

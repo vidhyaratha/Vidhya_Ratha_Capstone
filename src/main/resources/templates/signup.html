@@ -103,7 +103,7 @@
 
                 <div class="form-outline mb-4" >
                     <label class="form-label" ><b>Full Name</b></label>
-                    <input type="text" th:field="*{empName}" id="name" class="form-control form-control-lg" required />
+                    <input type="text" th:field="*{empName}" id="name" class="form-control form-control-lg" min="4" max="25" required />
                     <p th:errors = "*{empName}" class="text-danger" th:if="${#fields.hasErrors('empName')}"></p>
                 </div>
 

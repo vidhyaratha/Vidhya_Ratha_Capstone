@@ -30,6 +30,7 @@ public class AssetServiceImpl implements AssetService {
 
     @Override
     public Asset assignAssetToAssignedStatus(String assetType, String status) {
+
         List<Asset> asset = assetRepository.findByAssetType(assetType);
         List<Asset> unassignedAssets = new ArrayList<>();
         Asset newAsset = new Asset();
@@ -61,7 +62,7 @@ public class AssetServiceImpl implements AssetService {
     public void updateAssetStatus(String assetId, String status) {
         Asset asset = assetRepository.findByAssetId(assetId);
         asset.setStatus(status);
-        logger.info("Updated assest status succesfully- "+ status);
+        logger.info("Updated asset status successfully- "+ status);
         assetRepository.save(asset);
 
     }

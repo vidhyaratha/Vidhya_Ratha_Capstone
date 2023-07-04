@@ -9,7 +9,7 @@ public interface EmployeeAssetsService {
 
     public List<AssetDTO> getAssetsByEmployeeId(String empId);
 
-    public void assignAsset(String empId, String assetId);
+    public void assignAsset(String empId, String assetId) ;
 
     public void deleteByAssetId(String assetId);
 }

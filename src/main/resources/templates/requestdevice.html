@@ -122,12 +122,7 @@
                             <div class="form-group">
                             <label class="form-label" ><b>Select a Device</b></label>
                             <select id="dropdown" th:name="selectedType" required>
-                                <option selected="true" disabled="disabled"> Select a Device</option>
                                 <option th:each="assets : ${assetTypes}" th:value="${assets}" th:text="${assets}">
-<!--                                <option th:value="option1">Laptop-Mac</option>-->
-<!--                                <option th:value="option2">Laptop-Windows</option>-->
-<!--                                <option th:value="option3">Keyboard</option>-->
-<!--                                <option th:value="option3">Mouse</option>-->
                             </select>
                         </div>
 
