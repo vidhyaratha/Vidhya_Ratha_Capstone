@@ -18,7 +18,7 @@ public class UserRepositoryTest
     @Autowired
     private UserRepository userRepository;
 
-
+    //To validate an employee email address
     @Test
     @DisplayName("Test Case : Validate User Email")
     public void findByUserByEmailTest()
@@ -27,7 +27,7 @@ public class UserRepositoryTest
         Assert.assertEquals("111",user.getEmpId());
     }
 
-
+    //To validate an employee
     @Test
     @DisplayName("Test Case : Validate User Emp Id")
     public void findByUserByEmpIdTest()

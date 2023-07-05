@@ -27,11 +27,6 @@ public class UserPrincipal implements UserDetails {
         return roles.stream().map(role -> new SimpleGrantedAuthority(role.getName())).collect(Collectors.toList());
     }
 
-//    @Override
-//    public List<GrantedAuthority> getAuthorities()
-//    {
-//        return AuthorityUtils.createAuthorityList("VALID_EMPLOYEE_ROLE");
-//    }
 
     @Override
     public String getPassword() {

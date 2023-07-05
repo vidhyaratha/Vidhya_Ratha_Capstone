@@ -26,7 +26,7 @@ public class EmployeeAssetsRepositoryTest
     private AssetRepository assetRepository;
     @Autowired
     private UserRepository userRepository;
-
+    //To validate employee assets using the asset id
     @Test
     @DisplayName("Test Case : Validate Employee Asset")
     public void findByAssetTest()
@@ -35,7 +35,7 @@ public class EmployeeAssetsRepositoryTest
         EmployeeAssets employeeAssets = employeeAssetsRepository.findByAsset(asset);
         Assert.assertEquals("HP 21 inch Monitor",employeeAssets.getAsset().getAssetName());
     }
-
+    //To validate employee by their employee id
     @Test
     @DisplayName("Test Case : Validate Employee")
     public void findByUserTest()

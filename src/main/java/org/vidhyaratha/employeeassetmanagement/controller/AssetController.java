@@ -5,17 +5,21 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.expression.AccessException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.vidhyaratha.employeeassetmanagement.Exception.AccessRoleException;
 import org.vidhyaratha.employeeassetmanagement.Exception.UserNotFoundException;
 import org.vidhyaratha.employeeassetmanagement.dto.AssetDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
+import org.vidhyaratha.employeeassetmanagement.model.Role;
 import org.vidhyaratha.employeeassetmanagement.model.User;
 import org.vidhyaratha.employeeassetmanagement.service.AssetService;
+import org.vidhyaratha.employeeassetmanagement.service.RoleService;
 import org.vidhyaratha.employeeassetmanagement.service.UserService;
 
 import java.time.LocalDate;
@@ -33,6 +37,9 @@ public class AssetController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private RoleService roleService;
+
     private static final Logger logger = LoggerFactory.getLogger(AssetController.class);
 
     @ModelAttribute("userDTO")
@@ -40,6 +47,10 @@ public class AssetController {
         return new UserDTO();
     }
 
+
+
+
+    //  Get request handler method to request for a new device
     @GetMapping("/requestDevice")
     public String requestDevice(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
 
@@ -60,20 +71,33 @@ public class AssetController {
         return "requestdevice";
     }
 
+
+    // Get request handler method to display the list of all asset types
     @GetMapping("/addNewAsset")
-    public String showAddAsset(Model model)
-    {
+    public String showAddAsset(Model model) {
         List<String> assetTypeList = assetService.getAllAssetTypes();
         AssetDTO assetDTO = new AssetDTO();
         model.addAttribute("assetTypes", assetTypeList);
         model.addAttribute("assetDTO",assetDTO);
         logger.info("Asset types displayed from Asset Entity ");
 
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        User existingEmployee = userService.findUserByEmail(username);
+        Role userRole = roleService.getRolesByUser(existingEmployee.getEmpId());
+
+        if(userRole.getName().equals("ROLE_USER"))
+        {
+          throw new AccessRoleException("This page is accessible only by Admin");
+        }
+
 
         return "addnewasset";
     }
 
 
+    // Post request handler method to add a new asset
     @PostMapping("/processAddNewAsset")
     public String addNewAsset(@RequestParam("selectedType") String selectedType,
                               @ModelAttribute("assetDTO") AssetDTO assetDTO, Model model)

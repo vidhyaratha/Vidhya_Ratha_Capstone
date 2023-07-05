@@ -3,8 +3,6 @@ package org.vidhyaratha.employeeassetmanagement.Exception;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -37,5 +35,9 @@ public class GlobalExceptionHandler {
     }
 
 
-    // Add more exception handler methods for other custom exceptions if needed
+    @ExceptionHandler(AccessRoleException.class)
+    public String handleAccessRoleException(AccessRoleException ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error";
+    }
 }

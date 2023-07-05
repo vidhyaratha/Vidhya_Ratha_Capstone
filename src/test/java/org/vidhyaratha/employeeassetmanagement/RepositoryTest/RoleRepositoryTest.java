@@ -21,7 +21,7 @@ public class RoleRepositoryTest
     @Autowired
     private RoleRepository roleRepository;
 
-
+    //To validate an employee by role name
     @Test
     @DisplayName("Test Case : Validate Role Name")
     public void findRoleByNameTest()
@@ -30,13 +30,13 @@ public class RoleRepositoryTest
         Assert.assertEquals("ROLE_USER",role.getName());
     }
 
-
+    //To validate employee role by employee id
     @Test
     @DisplayName("Test Case : Validate Role By User")
     public void findRoleByUserTest()
     {
-        List<Role> role = roleRepository.findRoleByUser("111");
-        Assert.assertEquals("ROLE_USER",role.get(0).getName());
+        Role role = roleRepository.findRoleByUser("111");
+        Assert.assertEquals("ROLE_USER",role.getName());
 
     }
 }

@@ -1,33 +1,17 @@
 package org.vidhyaratha.employeeassetmanagement.security;
 
-//import jakarta.servlet.http.HttpServletRequest;
-//import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.vidhyaratha.employeeassetmanagement.service.UserServiceImpl;
 
 
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-////import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-//import org.springframework.security.core.userdetails.User;
-//import org.springframework.security.core.userdetails.UserDetails;
-//import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-//import org.springframework.security.web.SecurityFilterChain;
 
 
 @Configuration
@@ -63,18 +47,18 @@ public class SecurityConfiguration {
                                 .requestMatchers("/","/home",
                                         "/signin","/signup","/saveEmployee",
                                         "/styles/*", "/js/*","/images/*" ,"/getEmployeeAssets",
-                                        "/showDevice",
+                                        "/showDevice","/faq",
                                         "/requestDevice","/processRequestDevice",
                                         "/returnDevice","/processReturnDevice",
                                         "/editEmployeeInformation","/editEmployee","/processEditProfile","/logout").permitAll()
-                                .requestMatchers("/addNewAsset").hasAnyRole( "ADMIN")
+                                .requestMatchers("/addNewAsset").hasAnyRole( "ADMIN","USER")
                                 .anyRequest().authenticated()
                 )
 
                 .formLogin(form -> form
                         .loginPage("/signin")
-                        .loginProcessingUrl("/signin") // should point to login page
-                        .successForwardUrl("/getEmployeeAssets") // must be in order thymeleaf security extras work
+                        .loginProcessingUrl("/signin")
+                        .successForwardUrl("/getEmployeeAssets")
                         .permitAll()
                 )
                 .logout(
@@ -90,99 +74,4 @@ public class SecurityConfiguration {
 
 
     }
-
-//            http.csrf(csrf -> csrf.disable())
-//                    .authorizeHttpRequests(auth-> auth
-//                            .requestMatchers("/","/home","/signin","/signup",
-//                        "/styles/*", "/js/*","/images/*","/logout","/faq",
-//                        "/processSignup","/processSignin","/saveEmployee",
-//                        "/getEmployeeAssets/**","/showDevice",
-//                        "/requestDevice","/*/requestDevice","/processRequestDevice",
-//                        "/returnDevice","/*/returnDevice","/processReturnDevice",
-//                        "/editEmployeeInformation","/*/editEmployee","/processEditProfile").permitAll()
-////                        .requestMatchers("/addDevice").hasAnyRole("USER")
-//                            .requestMatchers("/addDevice").hasRole("ADMIN"))
-//                    .formLogin(
-//                            form -> form
-//                                    .loginPage("/signin")
-//                                    .loginProcessingUrl("/processSignin")
-//                                    .defaultSuccessUrl("/getEmployeeAssets")
-//                                    .permitAll()
-//                    ).logout(
-//                            logout -> logout
-//                                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                                    .permitAll());
-//            return http.build();
-//        }
-//    }
-
-
-
-//
-//
-//        http.authorizeHttpRequests(
-//                (auth) -> auth
-//                .requestMatchers("/","/home","/signin","/signup",
-//                        "/styles/*", "/js/*","/images/*","/logout","/faq",
-//                        "/processSignup","/processSignin","/saveEmployee",
-//                        "/getEmployeeAssets/**","/showDevice",
-//                        "/requestDevice","/*/requestDevice","/processRequestDevice",
-//                        "/returnDevice","/*/returnDevice","/processReturnDevice",
-//                        "/editEmployeeInformation","/*/editEmployee","/processEditProfile").permitAll()
-//                        .requestMatchers("/addDevice").hasAnyRole("USER")
-//                .anyRequest().authenticated())
-////                        (auth) -> auth
-////                                .requestMatchers("/","/process-student").permitAll()
-////                                .requestMatchers("/student-info","/student-account")
-////                                .hasRole("BEGINNER").anyRequest().authenticated())
-//
-//                .formLogin(
-//                        form -> form
-//                                .loginPage("/signin")
-//                                //.usernameParameter("empid").passwordParameter("password")
-//                                .loginProcessingUrl("/processSignin")
-//                                .successForwardUrl("/getEmployeeAssets")
-//                                .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .invalidateHttpSession(true)
-//                        .clearAuthentication(true)
-//                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//                        .permitAll()
-//                );
-
-
-//        return http.build();
-//
-//    }
-//}
-
-
-
-
-
-//        return http
-//                .authorizeRequests(configurer ->
-//                        configurer
-//                                .requestMatchers("/").hasRole("USER")
-//                                // .requestMatchers("/leaders/**").hasRole("MANAGER")
-//                                .requestMatchers("/addDevice").hasRole("ADMIN"))
-//
-//                .formLogin(configurer ->
-//                        configurer
-//                                .loginPage("/signin")
-//                                //.loginProcessingUrl("/processSignin")
-//                                .defaultSuccessUrl("/getEmployeeAssets")
-//                                .permitAll())
-//
-//                .logout(configure ->
-//                        configure
-//                                .permitAll())
-//                .exceptionHandling(configurer ->
-//                        configurer
-//                                .accessDeniedPage("/access-denied"))
-//                .build();
-//
-//    }
-//}
 

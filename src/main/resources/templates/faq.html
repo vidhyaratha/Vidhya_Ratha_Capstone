@@ -10,10 +10,11 @@
     <!--- Web Fonts --->
     <link href="https://fonts.googleapis.com/css2?family=Roboto" rel="stylesheet">
     <!--- External Styling -->
-    <link rel="stylesheet" type="text/css" th:href="@{/styles/index.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/styles/faq.css}">
     <!-- External Script File -->
     <!--  <script src="../js/homepage.js" defer></script>-->
     <script th:src="@{/js/faqs.js}" defer></script>
+
     <!-- Internal Styling with different CSS Selectors-->
     <style>
     body {
@@ -55,17 +56,13 @@
                         <h5>Home</h5>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <h5>Contact Us</h5>
-                    </a>
-                </li>
             </ul>
         </div>
     </div>
 </nav>
 
 <div class="hero">
+    <h2 id="title"></h2>
     <div id="faq-container"></div>
     </div>
 </div>

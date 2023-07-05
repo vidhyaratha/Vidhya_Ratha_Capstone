@@ -57,23 +57,31 @@ public class UserServiceImpl implements UserService {
         return userRepository.findUserByEmpId(empId);
     }
 
-
+    //To save employee details in user entity after successful signup
     @Override
-    public void saveUser(UserDTO userDTO) {
+    public void saveUser(UserDTO userDTO, String role) {
 
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
 
         User user = modelMapper.map(userDTO, User.class);
         user.setPassword(encoder.encode(user.getPassword()));
-        user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_USER")));
+        logger.info("Role : "+role);
+
+        if(role.equals("user")) {
+            user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_USER")));
+        }
+        else if(role.equals("admin"))
+        {
+            user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_ADMIN")));
+        }
 
         logger.info("Employee sign up success");
        userRepository.save(user);
     }
 
 
-
+    //To authenticate employee using their email and password
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -84,7 +92,7 @@ public class UserServiceImpl implements UserService {
 
             throw new UsernameNotFoundException("Invalid username or password.");
         }
-        //return new UserPrincipal(user, roleService.getRolesByUser(user.getEmpId()));
+
 
         logger.info("Employee sign in success");
         return new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),

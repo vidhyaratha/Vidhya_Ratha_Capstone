@@ -16,12 +16,11 @@ public interface UserService extends UserDetailsService{
 
     public User findUserByEmpId(String empId);  //  Retrieve Employee by EmpId
 
-    public void saveUser(UserDTO userDTO);        // Insert Employee
+    public void saveUser(UserDTO userDTO,String role);        // Insert Employee
 
 
 
-    public UserDetails loadUserByUsername(String userName);
+    public UserDetails loadUserByUsername(String userName); //Load Employee by Email
 
-    //List<Employee> getAll();
 
 }

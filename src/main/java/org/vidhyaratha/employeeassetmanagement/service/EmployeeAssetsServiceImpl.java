@@ -41,7 +41,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
         this.employeeAssetsRepository = employeeAssetsRepository;
     }
 
-
+    //To get an employee assigned assets by their employee id
     @Override
     public List<AssetDTO> getAssetsByEmployeeId(String empId) {
         User user = userRepository.findUserByEmpId(empId);
@@ -67,7 +67,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
         return assetDTOList;
     }
 
-
+    //To assign a new asset to am employee using there employee id and their corresponding asset id
     @Override
     public void assignAsset(String empId, String assetId)  {
         User user = userRepository.findUserByEmpId(empId);
@@ -94,7 +94,7 @@ public class EmployeeAssetsServiceImpl implements EmployeeAssetsService {
 
 
 
-
+    //To delete an asset from employee assets entity using the asset id
     @Override
     public void deleteByAssetId(String assetId) {
 

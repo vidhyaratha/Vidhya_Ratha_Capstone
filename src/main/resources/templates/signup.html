@@ -53,11 +53,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <h5>Contact Us</h5>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" th:href="@{/signin}">
                         <h5>Sign In</h5>
                     </a>
@@ -135,6 +130,14 @@
                     <label class="form-label"><b>Password</b></label>
                     <input type="password" th:field="*{password}" id="pwd" class="form-control form-control-lg" minlength="6" maxlength="15" required/>
                     <p th:errors="*{password}"  class="text-danger" th:if="${#fields.hasErrors('password')}" ></p>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <label class="form-label" ><b>Role</b></label>
+                    <input type="radio"id ="user" th:value="user" name="role"   required />
+                    <label for="user">User</label>
+                    <input type="radio" id="admin" th:value="admin" name="role"   required/>
+                    <label for="admin">Admin</label>
                 </div>
 
                 <div class="d-flex justify-content-center pt-3">

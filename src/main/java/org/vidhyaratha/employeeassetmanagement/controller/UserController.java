@@ -14,11 +14,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.vidhyaratha.employeeassetmanagement.Exception.DeviceExceededLimitationException;
 import org.vidhyaratha.employeeassetmanagement.Exception.PasswordMatchException;
 import org.vidhyaratha.employeeassetmanagement.dto.EditProfileDTO;
 import org.vidhyaratha.employeeassetmanagement.dto.UserDTO;
+import org.vidhyaratha.employeeassetmanagement.model.Role;
 import org.vidhyaratha.employeeassetmanagement.model.User;
+import org.vidhyaratha.employeeassetmanagement.service.RoleService;
 import org.vidhyaratha.employeeassetmanagement.service.UserService;
 
 @Slf4j
@@ -28,18 +29,14 @@ public class UserController {
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
-    @InitBinder
-    public void initBinder(WebDataBinder dataBinder) {
-        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
-        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
-    }
-
-
     private  UserService userService;
 
+    private RoleService roleService;
+
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, RoleService roleService) {
         this.userService = userService;
+        this.roleService = roleService;
     }
 
 
@@ -49,20 +46,27 @@ public class UserController {
     }
 
 
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+        dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+    }
+
+    // Get request handler method to display the home page
     @GetMapping("/home")
     public String home() {
         logger.info("Home Page Displayed");
         return "index";
     }
 
-
+    // Get request handler method to display sign in page
     @RequestMapping("/signin")
     public String showSigninForm(Model model) {
         logger.info("Show Sign In page Displayed");
         return "signin";
     }
 
-
+    // Get Request handler method to display sign up page
     @GetMapping("/signup")
     public String showSignupForm(Model model) {
         UserDTO userDTO = new UserDTO();
@@ -71,17 +75,17 @@ public class UserController {
         return "signup";
     }
 
-
+    // Get request handler method to redirect to the signin  page when logged out
     @GetMapping("/logout")
     public String logout() {
         logger.info("Logged out successfully");
         return "redirect:/signin?logout";
     }
 
-
+    // Post request handler method to redirect to the sign up page to show success message
     @PostMapping("/saveEmployee")
     public String saveEmployee(@Valid @ModelAttribute("userDTO") UserDTO userDTO,@RequestParam("gender") String gender,
-                               BindingResult result, Model model) {
+                               @RequestParam("role") String role,BindingResult result, Model model) {
 
         User existingEmployeeI = userService.findUserByEmpId(userDTO.getEmpId());
         User existingEmployeeE = userService.findUserByEmail(userDTO.getEmail());
@@ -94,13 +98,13 @@ public class UserController {
             }
         }
 
-     userService.saveUser(userDTO);
+     userService.saveUser(userDTO, role);
         logger.info("Registration successful");
         return "redirect:/signup?success";
 
     }
 
-
+    // Get Request handler method to display the faq page
     @GetMapping("/faq")
     public String questions() {
         logger.info("FAQ page Displayed");
@@ -108,14 +112,14 @@ public class UserController {
     }
 
 
-
+    // Get request handler method to redirect to the edit employee page
     @GetMapping("/editEmployeeInformation")
     public String showupdateEmployee(@ModelAttribute("userDTO") UserDTO userDTO) {
         logger.info("Employee Edit Profile Displayed");
         return "redirect:/editEmployee";
     }
 
-
+    // Get request handler method to display the edit employee page
     @GetMapping("/editEmployee")
     public String updateEmployee(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
 
@@ -127,7 +131,7 @@ public class UserController {
         return "editprofile";
     }
 
-
+    // Post request handler method to edit the employee information
     @PostMapping("/processEditProfile")
     public String processEditProfile(@ModelAttribute("userDTO") UserDTO userDTO,
                                     @RequestParam("confirmPassword") String confirmPassword,
@@ -138,6 +142,8 @@ public class UserController {
 
         User existingEmployee = userService.findUserByEmail(username);
 
+        Role role = roleService.getRolesByUser(existingEmployee.getEmpId());
+
 
         if (password.equals(confirmPassword)) {
             userDTO.setEmail(editProfileDTO.getEmail());
@@ -146,7 +152,7 @@ public class UserController {
             userDTO.setEmpId(existingEmployee.getEmpId());
             userDTO.setGender(existingEmployee.getGender());
             userDTO.setLocation(existingEmployee.getLocation());
-            userService.saveUser(userDTO);
+            userService.saveUser(userDTO, role.getName());
             logger.info("Employee Profile Updated successfully");
             return "redirect:/getEmployeeAssets";
         }

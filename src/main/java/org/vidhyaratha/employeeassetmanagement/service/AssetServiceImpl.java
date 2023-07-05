@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.vidhyaratha.employeeassetmanagement.controller.UserController;
 import org.vidhyaratha.employeeassetmanagement.model.Asset;
 import org.vidhyaratha.employeeassetmanagement.repository.AssetRepository;
 
@@ -27,7 +26,7 @@ public class AssetServiceImpl implements AssetService {
         this.assetRepository = assetRepository;
     }
 
-
+    //To assign assets to assigned status
     @Override
     public Asset assignAssetToAssignedStatus(String assetType, String status) {
 
@@ -51,22 +50,22 @@ public class AssetServiceImpl implements AssetService {
 
     }
 
-
+    //To get all asset types from asset entity
     @Override
     public List<String> getAllAssetTypes() {
         return assetRepository.findDistinctAssetTypes();
     }
 
-
+    //To update an asset status based on asset id
     @Override
     public void updateAssetStatus(String assetId, String status) {
         Asset asset = assetRepository.findByAssetId(assetId);
         asset.setStatus(status);
-        logger.info("Updated asset status successfully- "+ status);
+        logger.info("Updated asset status successfully- " + status);
         assetRepository.save(asset);
 
     }
-
+    //To add a new asset to asset entity
     @Override
     public void addAsset(Asset asset) {
         assetRepository.save(asset);

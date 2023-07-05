@@ -12,17 +12,17 @@ var faqData = [
     question: "How can I check the availability of a specific asset?",
     answer: "You can check the availability of a specific asset by contacting the Asset Management department. They will provide you with the current status and availability details."
   },
-  // Add more FAQ items as needed
+
 ];
 
 // Function to generate FAQ HTML
 function generateFAQHtml() {
   var faqContainer = document.getElementById("faq-container");
     faqContainer.style.fontStyle = "bold";
-    faqContainer.style.fontStyle = "italic";
     faqContainer.style.color = "orange";
     faqContainer.style.margin = "10px";
 
+    Frequently asked Questions
 
   for (var i = 0; i < faqData.length; i++) {
     var question = faqData[i].question;

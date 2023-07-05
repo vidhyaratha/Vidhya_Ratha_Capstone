@@ -24,7 +24,7 @@ public class AssetRepositoryTest {
         this.assetRepository = assetRepository;
     }
 
-
+    //To test DistinctAssetTypes from asset entity
     @ParameterizedTest
     @DisplayName("Test Case : Validate Distinct Asset Types")
     @ValueSource(strings = {"Keyboard","Laptop-Mac"})
@@ -34,7 +34,7 @@ public class AssetRepositoryTest {
         Assert.assertTrue(assetTypes.contains(testExpected));
     }
 
-
+    //To test an asset using the test id
     @Test
     @DisplayName("Test Case : Validate  Asset Id")
     public void findByAssetIdTest()
@@ -45,7 +45,7 @@ public class AssetRepositoryTest {
         Assert.assertEquals("Unassigned",asset.getStatus());
     }
 
-
+    //To test an asset type
     @Test
     @DisplayName("Test Case : Validate  Asset Type")
     public void findByAssetType()
