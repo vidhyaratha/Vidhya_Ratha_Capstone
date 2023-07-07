@@ -81,6 +81,31 @@ public class UserServiceImpl implements UserService {
     }
 
 
+
+    @Override
+    public void editUser(UserDTO userDTO) {
+
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
+
+        User user = modelMapper.map(userDTO, User.class);
+        user.setPassword(encoder.encode(user.getPassword()));
+
+        Role role = roleService.getRolesByUser(user.getEmpId());
+        logger.info("Role - edit : "+role.getName());
+        if(role.getName().equals("ROLE_USER")) {
+            user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_USER")));
+        }
+        else if(role.getName().equals("ROLE_ADMIN"))
+        {
+            user.setRoles(Arrays.asList(roleService.findRoleByName("ROLE_ADMIN")));
+        }
+
+        logger.info("Employee sign up success");
+        userRepository.save(user);
+    }
+
+
     //To authenticate employee using their email and password
     @Override
     @Transactional

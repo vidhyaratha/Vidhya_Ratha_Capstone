@@ -18,7 +18,7 @@ public interface UserService extends UserDetailsService{
 
     public void saveUser(UserDTO userDTO,String role);        // Insert Employee
 
-
+    public void editUser(UserDTO userDTO);
 
     public UserDetails loadUserByUsername(String userName); //Load Employee by Email
 

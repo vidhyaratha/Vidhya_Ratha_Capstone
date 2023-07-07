@@ -152,7 +152,7 @@ public class UserController {
             userDTO.setEmpId(existingEmployee.getEmpId());
             userDTO.setGender(existingEmployee.getGender());
             userDTO.setLocation(existingEmployee.getLocation());
-            userService.saveUser(userDTO, role.getName());
+            userService.editUser(userDTO);
             logger.info("Employee Profile Updated successfully");
             return "redirect:/getEmployeeAssets";
         }
