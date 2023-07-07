@@ -9,7 +9,7 @@ Asset Status: The system maintains the status of assets, whether they are assign
 Dashboard: Employees can view their assigned assets and their details on their dashboard.
 
 
-Technologies Used
+Technologies Used :
 Java
 Spring Boot
 Spring Security
