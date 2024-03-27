@@ -1,0 +1,12 @@
+server:
+  port: 1234
+
+spring:
+  profiles:
+    active: dev
+
+  jackson.deserialization.fail-on-unknown-properties: true
+  jackson.serialization.fail-on-empty-beans: false
+  mvc.hiddenmethod.filter.enabled: true
+  main.allow-bean-definition-overriding: true
+  jpa.hibernate.ddl-auto: update
