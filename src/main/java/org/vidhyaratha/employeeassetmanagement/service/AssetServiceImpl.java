@@ -70,4 +70,7 @@ public class AssetServiceImpl implements AssetService {
     public void addAsset(Asset asset) {
         assetRepository.save(asset);
     }
+
+
+
 }

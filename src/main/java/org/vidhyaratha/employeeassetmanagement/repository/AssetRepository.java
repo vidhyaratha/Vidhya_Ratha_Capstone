@@ -18,4 +18,6 @@ public interface AssetRepository extends JpaRepository<Asset, Long> {
     @Query(value = "Select DISTINCT assetType from assets where assetType is not null", nativeQuery = true)
     public List<String> findDistinctAssetTypes();
 
+
+
 }

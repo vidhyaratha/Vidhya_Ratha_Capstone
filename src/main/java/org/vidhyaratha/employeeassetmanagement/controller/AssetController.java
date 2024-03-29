@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -47,8 +49,6 @@ public class AssetController {
     }
 
 
-
-
     //  Get request handler method to request for a new device
     @GetMapping("/requestDevice")
     public String requestDevice(@ModelAttribute("userDTO") UserDTO userDTO, Model model) {
@@ -57,14 +57,13 @@ public class AssetController {
         String username = authentication.getName();
 
         User existingEmployee = userService.findUserByEmail(username);
-        if(existingEmployee == null)
-        {
+        if (existingEmployee == null) {
             throw new UserNotFoundException("Please contact Admin  at admin@admin.org");
         }
         List<String> assetTypeList = assetService.getAllAssetTypes();
 
         model.addAttribute("assetTypes", assetTypeList);
-        model.addAttribute("employee",existingEmployee);
+        model.addAttribute("employee", existingEmployee);
         logger.info("Redirect employee to request a new device");
 
         return "requestdevice";
@@ -77,7 +76,7 @@ public class AssetController {
         List<String> assetTypeList = assetService.getAllAssetTypes();
         AssetDTO assetDTO = new AssetDTO();
         model.addAttribute("assetTypes", assetTypeList);
-        model.addAttribute("assetDTO",assetDTO);
+        model.addAttribute("assetDTO", assetDTO);
         logger.info("Asset types displayed from Asset Entity ");
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -86,9 +85,8 @@ public class AssetController {
         User existingEmployee = userService.findUserByEmail(username);
         Role userRole = roleService.getRolesByUser(existingEmployee.getEmpId());
 
-        if(userRole.getName().equals("ROLE_USER"))
-        {
-          throw new AccessRoleException("This page is accessible only by Admin");
+        if (userRole.getName().equals("ROLE_USER")) {
+            throw new AccessRoleException("This page is accessible only by Admin");
         }
 
 
@@ -99,12 +97,11 @@ public class AssetController {
     // Post request handler method to add a new asset
     @PostMapping("/processAddNewAsset")
     public String addNewAsset(@RequestParam("selectedType") String selectedType,
-                              @ModelAttribute("assetDTO") AssetDTO assetDTO, Model model)
-    {
+                              @ModelAttribute("assetDTO") AssetDTO assetDTO, Model model) {
         Random random = new Random();
         Asset asset = new Asset();
         asset.setId(random.nextLong());
-        asset.setAssetId("AID"+ random.nextInt());
+        asset.setAssetId("AID" + random.nextInt());
         asset.setAssetName(assetDTO.getAssetName());
         asset.setAssetType(selectedType);
         asset.setAssetCreatedDate(LocalDate.now().toString());
@@ -115,10 +112,11 @@ public class AssetController {
         List<String> assetTypeList = assetService.getAllAssetTypes();
         model.addAttribute("assetTypes", assetTypeList);
 
-        model.addAttribute("successMessage","New Asset created");
+        model.addAttribute("successMessage", "New Asset created");
         logger.info("New assest created by admin user");
         return "addnewasset";
 
     }
+
 
 }

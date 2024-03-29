@@ -1,0 +1,5 @@
+FROM openjdk:17
+
+COPY target/capstone.jar capstone.jar
+
+ENTRYPOINT ["java","-jar","/capstone.jar"]
