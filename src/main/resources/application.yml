@@ -1,5 +1,5 @@
-server:
-  port: 1234
+#server:
+#  port: 1234
 
 spring:
   profiles:
@@ -10,3 +10,12 @@ spring:
   mvc.hiddenmethod.filter.enabled: true
   main.allow-bean-definition-overriding: true
   jpa.hibernate.ddl-auto: update
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: '*'
+    info:
+      env:
+        enabled: true
