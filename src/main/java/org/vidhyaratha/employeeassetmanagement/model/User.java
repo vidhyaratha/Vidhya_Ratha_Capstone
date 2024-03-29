@@ -11,7 +11,7 @@ import java.util.Collection;
 import java.util.List;
 
 
-@Table(name = "user")
+@Table(name = "employee")
 @Entity
 @Getter
 @Setter
