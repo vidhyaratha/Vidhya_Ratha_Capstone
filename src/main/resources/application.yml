@@ -1,21 +1,19 @@
-#server:
-#  port: 1234
+server:
+  port: 8085
 
 spring:
-  profiles:
-    active: dev
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${DEV_DB_HOST}:${DEV_DB_PORT}/${DEV_DB_NAME}
+    username: ${DEV_DB_USERNAME}
+    password: ${DEV_DB_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL82Dialect
+    show-sql: true
 
-  jackson.deserialization.fail-on-unknown-properties: true
-  jackson.serialization.fail-on-empty-beans: false
-  mvc.hiddenmethod.filter.enabled: true
-  main.allow-bean-definition-overriding: true
-  jpa.hibernate.ddl-auto: update
 
-  management:
-    endpoints:
-      web:
-        exposure:
-          include: '*'
-    info:
-      env:
-        enabled: true
+
