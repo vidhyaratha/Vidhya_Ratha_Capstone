@@ -1,19 +1,9 @@
-server:
-  port: 8085
-
 spring:
   datasource:
-    driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://${DEV_DB_HOST}:${DEV_DB_PORT}/${DEV_DB_NAME}
     username: ${DEV_DB_USERNAME}
     password: ${DEV_DB_PASSWORD}
-  jpa:
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL82Dialect
-    show-sql: true
+
 
 
 
